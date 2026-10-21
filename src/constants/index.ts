@@ -35,7 +35,6 @@ import {
   threejs,
   dhanushImg,
   hariharasudhanImg,
-  sivaImg,
 } from "../assets";
 
 export const navLinks: TNavLink[] = [
@@ -639,13 +638,6 @@ const allProjects: IProjectCategory[] = [
 const projects: TProject[] = allProjects.flatMap(cat => cat.projects);
 
 const teamMembers: TTeamMember[] = [
-  {
-    name: "Sivaramakrishnan",
-    degree: "B.Sc. CS",
-    role: "Client Relationship & Sales Management Professional",
-    specialization: "Cybersecurity Specialist",
-    image: sivaImg,
-  },
   {
     name: "Dhanush Kumar S",
     degree: "B.E, EIE",

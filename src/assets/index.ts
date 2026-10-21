@@ -32,7 +32,6 @@ import tripguide from "./tripguide.png";
 // Team member images
 import dhanushImg from "../constants/dk.jpg";
 import hariharasudhanImg from "../constants/irah.jpg";
-import sivaImg from "../constants/Siva.jpeg";
 import dnxLogo from "./dnx.png";
 
 export {
@@ -64,6 +63,5 @@ export {
   tripguide,
   dhanushImg,
   hariharasudhanImg,
-  sivaImg,
   dnxLogo,
 };
