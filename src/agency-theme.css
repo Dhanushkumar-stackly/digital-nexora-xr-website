@@ -316,32 +316,63 @@
   max-width: 1320px;
 }
 
-.agency-theme #digitalmarketing .group.relative {
+/* Editorial numbered service list */
+.agency-services {
+  display: grid;
+  grid-template-columns: 1fr;
+  max-width: 46rem;
+  margin: 0;
+  padding: 0;
   overflow: hidden;
-  border: 1px solid var(--agency-line) !important;
-  border-radius: 1.15rem;
-  background: var(--agency-white) !important;
-  box-shadow: 0 14px 32px rgba(23, 25, 21, 0.055) !important;
+  border: 1px solid var(--agency-line);
+  border-radius: 1.25rem 0 0 0;
+  background: var(--agency-white);
+  list-style: none;
 }
 
-.agency-theme #digitalmarketing .group.relative [class*="absolute"] {
-  opacity: 0.12;
+.agency-service {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  padding: 2.4rem 2.25rem 2.6rem;
+  border-top: 1px solid var(--agency-line);
+  transition: background-color 200ms ease;
 }
 
-.agency-theme #digitalmarketing .group.relative h3,
-.agency-theme #digitalmarketing .group.relative li,
-.agency-theme #digitalmarketing .group.relative p {
+.agency-service:first-child {
+  border-top: 0;
+}
+
+.agency-service:hover {
+  background: var(--agency-paper);
+}
+
+.agency-theme .agency-service-label {
+  color: var(--agency-accent) !important;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.agency-theme .agency-service-title {
   color: var(--agency-ink) !important;
-}
-
-.agency-theme #digitalmarketing .group.relative h3 {
-  font-family: "Manrope", sans-serif;
+  font-size: clamp(1.45rem, 2.2vw, 1.85rem);
   font-weight: 800;
-  letter-spacing: -0.035em;
+  line-height: 1.15;
 }
 
-.agency-theme #digitalmarketing .group.relative li {
+.agency-theme .agency-service-text {
+  max-width: 48ch;
   color: var(--agency-muted) !important;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+@media (max-width: 639px) {
+  .agency-service {
+    padding: 1.9rem 1.5rem 2.1rem;
+  }
 }
 
 .agency-theme #about {

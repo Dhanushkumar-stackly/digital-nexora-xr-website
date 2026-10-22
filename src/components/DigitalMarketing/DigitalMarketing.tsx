@@ -1,7 +1,26 @@
 import React from "react";
-import services from "./data/services.json";
-import ServiceCard3D from "./ui/ServiceCard3D";
 import FloatingTitle from "./ui/FloatingTitle";
+
+const SERVICES = [
+  {
+    number: "01",
+    label: "SEO",
+    title: "Search. Visibility. Growth.",
+    description: "Strategic SEO that puts your brand in front of the right audience.",
+  },
+  {
+    number: "02",
+    label: "SMM",
+    title: "Social. Influence. Growth.",
+    description: "Strategic social media that turns attention into lasting brand value.",
+  },
+  {
+    number: "03",
+    label: "Website Development",
+    title: "Design. Experience. Conversion.",
+    description: "High-performance websites built around your brand and business goals.",
+  },
+];
 
 const DigitalMarketing: React.FC = () => {
   return (
@@ -15,13 +34,17 @@ const DigitalMarketing: React.FC = () => {
           drive engagement and conversions.
         </p>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {services.map((s: any) => (
-            <ServiceCard3D key={s.id} service={s} />
+        <ol className="agency-services">
+          {SERVICES.map((service) => (
+            <li key={service.number} className="agency-service">
+              <p className="agency-service-label">
+                {service.number} — {service.label}
+              </p>
+              <h3 className="agency-service-title">{service.title}</h3>
+              <p className="agency-service-text">{service.description}</p>
+            </li>
           ))}
-        </div>
-
-        {/* CTA removed for cleaner, professional layout */}
+        </ol>
       </div>
     </section>
   );
