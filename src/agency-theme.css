@@ -317,6 +317,30 @@
 }
 
 /* Editorial numbered service list */
+.agency-services-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 46rem) minmax(0, 1fr);
+  align-items: center;
+  gap: 2rem;
+}
+
+.agency-services-art {
+  width: 100%;
+  aspect-ratio: 1 / 1.05;
+  max-height: 640px;
+}
+
+@media (max-width: 1023px) {
+  .agency-services-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .agency-services-art {
+    max-width: 520px;
+    margin: 0 auto;
+  }
+}
+
 .agency-theme .agency-services-heading {
   margin-bottom: 1.25rem;
   color: var(--agency-ink) !important;
