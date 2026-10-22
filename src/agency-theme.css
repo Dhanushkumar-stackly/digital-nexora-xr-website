@@ -59,11 +59,11 @@
 }
 
 .agency-theme nav {
-  padding-top: 1rem;
-  padding-bottom: 1rem;
-  background: rgba(255, 254, 250, 0.94) !important;
-  border-bottom: 1px solid rgba(23, 25, 21, 0.08);
-  backdrop-filter: blur(18px);
+  padding-top: 0.45rem;
+  padding-bottom: 0.45rem;
+  background: var(--agency-paper) !important;
+  border-bottom: 0;
+  backdrop-filter: none;
 }
 
 .agency-theme nav .max-w-7xl {
@@ -73,8 +73,9 @@
 .agency-theme nav p {
   color: var(--agency-ink) !important;
   font-family: "Manrope", sans-serif;
-  font-size: 0.9rem;
-  letter-spacing: -0.025em;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.035em;
 }
 
 .agency-theme nav ul button {
@@ -600,6 +601,15 @@
   .agency-hero-inner {
     padding-right: 1.25rem;
     padding-left: 1.25rem;
+  }
+
+  .agency-theme nav p {
+    font-size: 0.78rem;
+    letter-spacing: 0.015em;
+  }
+
+  .agency-theme nav .items-center.gap-4 {
+    gap: 0.25rem;
   }
 
   .agency-hero-art {

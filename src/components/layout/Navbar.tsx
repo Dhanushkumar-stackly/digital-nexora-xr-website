@@ -97,7 +97,7 @@ const Navbar = () => {
             <img
               src={Assets.dnxLogo ?? ""}
               alt="DNX Logo"
-              className="h-12 w-12 object-contain transition-transform duration-300 group-hover:scale-110"
+              className="h-[60px] w-[66px] object-contain transition-transform duration-300 group-hover:scale-105"
             />
             <p
               className={`flex cursor-pointer text-[18px] font-bold text-white transition-all duration-300 group-hover:tracking-wider ${
