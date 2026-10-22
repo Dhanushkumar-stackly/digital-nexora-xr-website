@@ -70,13 +70,6 @@ const NotFound = () => {
             >
               Go to Home
             </Link>
-
-            <Link
-              to="/projects"
-              className="px-8 py-4 bg-white/10 backdrop-blur-md text-white font-semibold rounded-full border border-white/20 hover:bg-white/20 transition-all duration-300 shadow-lg"
-            >
-              View Projects
-            </Link>
           </motion.div>
 
           {/* Decorative Elements */}

@@ -15,9 +15,6 @@ const Navbar = () => {
     if (navId === "book-project") {
       navigate("/book-project");
       window.scrollTo(0, 0);
-    } else if (navId === "projects") {
-      navigate("/projects");
-      window.scrollTo(0, 0);
     } else {
       // If not on home page, navigate to home first
       if (location.pathname !== "/") {

@@ -1,6 +1,8 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 
+import HeroMarketingCanvas from "../canvas/HeroMarketing";
+
 const Hero = () => {
   return (
     <section className="agency-hero relative mx-auto min-h-[760px] w-full overflow-hidden">
@@ -25,7 +27,7 @@ const Hero = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.25 }}
           >
-            We build thoughtful websites and digital campaigns that help ambitious businesses grow.
+          We turn search visibility and social influence into real business growth.
           </motion.p>
 
           <div className="agency-hero-actions mt-8 flex flex-wrap items-center gap-4">
@@ -46,13 +48,8 @@ const Hero = () => {
           animate={{ opacity: 1, scale: 1, rotate: 0 }}
           transition={{ duration: 1, delay: 0.2, ease: "easeOut" }}
         >
-          <div className="agency-orbit agency-orbit-outer" />
-          <div className="agency-orbit agency-orbit-middle" />
-          <div className="agency-orbit agency-orbit-inner" />
-          <div className="agency-orbit-core" />
-          <span className="agency-orbit-dot agency-orbit-dot-one" />
-          <span className="agency-orbit-dot agency-orbit-dot-two" />
-          <span className="agency-orbit-square" />
+          <div className="agency-globe-glow" />
+          <HeroMarketingCanvas />
         </motion.div>
       </div>
 

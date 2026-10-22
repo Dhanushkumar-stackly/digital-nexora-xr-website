@@ -34,7 +34,6 @@ type TConfig = {
     about: Required<TSection>;
     experience: TSection;
     digitalMarketing: Required<TSection>;
-    works: Required<TSection>;
     feedbacks: Required<TSection>;
   };
 };
@@ -78,11 +77,6 @@ export const config: TConfig = {
       p: "Digital Solutions",
       h2: "Digital Marketing.",
       content: `Comprehensive digital marketing services combining AI-driven strategies with cutting-edge web technologies. From SEO optimization and social media management to content marketing and analytics, we deliver data-driven campaigns that drive engagement and conversions. Our expertise in modern web frameworks ensures seamless integration of marketing tools and tracking systems for measurable results.`,
-    },
-    works: {
-      p: "Advanced Projects",
-      h2: "Projects.",
-      content: `The following advanced projects showcase my expertise in AI, computer vision, IoT, and full-stack development. Each project demonstrates real-world applications of cutting-edge technologies, from machine learning models to 3D interactive experiences. These projects reflect my ability to solve complex technical challenges and deliver innovative solutions across diverse domains.`,
     },
     feedbacks: {
       p: "What others say",
