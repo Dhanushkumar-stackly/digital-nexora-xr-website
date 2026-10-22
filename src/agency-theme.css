@@ -317,6 +317,14 @@
 }
 
 /* Editorial numbered service list */
+.agency-theme .agency-services-heading {
+  margin-bottom: 1.25rem;
+  color: var(--agency-ink) !important;
+  font-size: clamp(1.75rem, 3vw, 2.4rem);
+  font-weight: 800;
+  line-height: 1.1;
+}
+
 .agency-services {
   display: grid;
   grid-template-columns: 1fr;

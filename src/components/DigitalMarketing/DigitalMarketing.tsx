@@ -34,6 +34,8 @@ const DigitalMarketing: React.FC = () => {
           drive engagement and conversions.
         </p>
 
+        <h3 className="agency-services-heading">Our Service</h3>
+
         <ol className="agency-services">
           {SERVICES.map((service) => (
             <li key={service.number} className="agency-service">
