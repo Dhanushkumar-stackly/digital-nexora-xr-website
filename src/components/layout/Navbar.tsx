@@ -3,7 +3,6 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import { navLinks } from "../../constants";
 import * as Assets from "../../assets";
-import { config } from "../../constants/config";
 
 const Navbar = () => {
   const [active, setActive] = useState<string | null>();
@@ -99,12 +98,8 @@ const Navbar = () => {
               alt="DNX Logo"
               className="h-[60px] w-[66px] object-contain transition-transform duration-300 group-hover:scale-105"
             />
-            <p
-              className={`flex cursor-pointer text-[18px] font-bold text-white transition-all duration-300 group-hover:tracking-wider ${
-                scrolled ? "" : "[transform:perspective(500px)_rotateX(2deg)]"
-              }`}
-            >
-              {config.html.title}
+            <p className="flex cursor-pointer text-[18px] font-bold text-white transition-all duration-300 group-hover:tracking-wider">
+              Digital Nexora XR
             </p>
           </Link>
 
@@ -118,9 +113,7 @@ const Navbar = () => {
             <img
               src={toggle ? Assets.close ?? "" : Assets.menu ?? ""}
               alt=""
-              className={`h-[28px] w-[28px] object-contain transition-all duration-200 ${
-                scrolled ? "" : "brightness-0 invert"
-              }`}
+              className="h-[28px] w-[28px] object-contain transition-all duration-200"
             />
           </button>
         </div>

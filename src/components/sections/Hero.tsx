@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 
 const Hero = () => {
   return (
@@ -14,18 +15,28 @@ const Hero = () => {
         >
           <h1 className="agency-wordmark font-black uppercase">
             <span className="agency-word agency-word-accent">DIGITAL</span>
-            <span className="agency-word agency-word-dark">NEXORAXR</span>
-            <span className="agency-word agency-word-dark agency-word-last">WEBTECH</span>
+            <span className="agency-word agency-word-dark">NEXORA</span>
+            <span className="agency-word agency-word-dark agency-word-last">XR WEBTECH</span>
           </h1>
 
           <motion.p
-            className="agency-hero-tagline mt-7 max-w-xl text-xl font-medium leading-relaxed sm:text-2xl lg:mt-9"
+            className="agency-hero-tagline mt-6 max-w-xl text-xl font-medium leading-relaxed sm:text-2xl lg:mt-8"
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.25 }}
           >
-            Create. Connect &amp; Convert
+            We build thoughtful websites and digital campaigns that help ambitious businesses grow.
           </motion.p>
+
+          <div className="agency-hero-actions mt-8 flex flex-wrap items-center gap-4">
+            <Link className="agency-button-primary" to="/book-project">
+              Start a project
+              <span aria-hidden="true">↗</span>
+            </Link>
+            <a className="agency-button-secondary" href="#digitalmarketing">
+              Explore our services
+            </a>
+          </div>
         </motion.div>
 
         <motion.div

@@ -94,6 +94,10 @@
   filter: brightness(0) !important;
 }
 
+.agency-theme nav button img {
+  filter: brightness(0) !important;
+}
+
 .agency-theme nav .black-gradient {
   background: var(--agency-white);
   border: 1px solid var(--agency-line);
@@ -126,7 +130,7 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  font-size: clamp(3.2rem, 8.9vw, 8.2rem);
+  font-size: clamp(3.2rem, 7.2vw, 7.5rem);
   line-height: 0.87;
   letter-spacing: -0.095em;
 }
@@ -164,6 +168,53 @@
 .agency-hero-tagline {
   color: var(--agency-muted);
   letter-spacing: -0.035em;
+}
+
+.agency-button-primary,
+.agency-button-secondary {
+  display: inline-flex;
+  min-height: 3.25rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  border-radius: 999px;
+  padding: 0.75rem 1.35rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background-color 180ms ease, border-color 180ms ease, color 180ms ease, transform 180ms ease;
+}
+
+.agency-button-primary {
+  background: var(--agency-ink);
+  color: var(--agency-white);
+}
+
+.agency-button-primary span {
+  color: inherit;
+  font-size: 1.15rem;
+}
+
+.agency-button-primary:hover {
+  background: var(--agency-accent);
+  color: white;
+  transform: translateY(-2px);
+}
+
+.agency-button-secondary {
+  border: 1px solid var(--agency-line);
+  color: var(--agency-ink);
+}
+
+.agency-button-secondary:hover {
+  border-color: var(--agency-ink);
+  transform: translateY(-2px);
+}
+
+.agency-button-primary:focus-visible,
+.agency-button-secondary:focus-visible {
+  outline: 3px solid rgba(241, 90, 59, 0.35);
+  outline-offset: 3px;
 }
 
 .agency-hero-art {
@@ -593,9 +644,23 @@
   }
 }
 
+@media (min-width: 768px) and (max-width: 1023px) {
+  .agency-hero-inner {
+    grid-template-columns: minmax(0, 1.1fr) minmax(250px, 0.9fr);
+    padding-top: 8rem;
+    padding-bottom: 6rem;
+  }
+
+  .agency-hero-art {
+    width: min(40vw, 390px);
+    height: min(40vw, 390px);
+    margin-top: 0;
+  }
+}
+
 @media (max-width: 639px) {
   .agency-wordmark {
-    font-size: clamp(3rem, 14vw, 5rem);
+    font-size: clamp(2.55rem, 12vw, 4rem);
   }
 
   .agency-hero-inner {
@@ -610,6 +675,14 @@
 
   .agency-theme nav .items-center.gap-4 {
     gap: 0.25rem;
+  }
+
+  .agency-button-primary,
+  .agency-button-secondary {
+    min-height: 3rem;
+    padding-right: 1.1rem;
+    padding-left: 1.1rem;
+    font-size: 0.88rem;
   }
 
   .agency-hero-art {

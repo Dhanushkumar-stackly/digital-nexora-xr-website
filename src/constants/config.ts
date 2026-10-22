@@ -41,8 +41,8 @@ type TConfig = {
 
 export const config: TConfig = {
   html: {
-    title: "DNX - DIGITAL NEXORAXR WEBTECH",
-    fullName: "DNX - DIGITAL NEXORAXR WEBTECH",
+    title: "Digital Nexora XR Webtech | DNX",
+    fullName: "Digital Nexora XR Webtech",
     email: "digitalnexorawebtech0401@gmail.com",
   },
   hero: {
