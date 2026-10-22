@@ -1,7 +1,6 @@
-import React, { useState, Suspense, lazy } from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { allProjects, websiteTypes } from "../constants";
-const StarsCanvas = lazy(() => import("../components/canvas/Stars"));
 import { fadeIn, textVariant } from "../utils/motion";
 
 interface IProjectCard {
@@ -195,10 +194,6 @@ const ProjectsPage = () => {
           ))}
         </div>
       </div>
-
-      <Suspense fallback={null}>
-        <StarsCanvas />
-      </Suspense>
     </div>
   );
 };

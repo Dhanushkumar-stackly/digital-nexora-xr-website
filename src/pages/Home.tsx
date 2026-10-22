@@ -1,20 +1,11 @@
 import { Suspense, lazy } from "react";
 import { AboutUs, Hero, Tech, Contact } from "../components";
-const StarsCanvas = lazy(() => import("../components/canvas/Stars"));
 
 const DigitalMarketing = lazy(() => import("../components/DigitalMarketing/DigitalMarketing"));
 
 const Home = () => {
   return (
     <div className="relative">
-      {/* Stars Background - Fixed behind all content (lazy-loaded) */}
-      <Suspense fallback={null}>
-        <div className="fixed inset-0 z-0 pointer-events-none">
-          <StarsCanvas />
-        </div>
-      </Suspense>
-
-      {/* Main Content - Layered above stars */}
       <div className="relative z-10">
         <Hero />
 

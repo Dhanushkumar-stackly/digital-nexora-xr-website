@@ -16,7 +16,7 @@ const App = () => {
 
   return (
     <BrowserRouter>
-      <div className="bg-primary relative z-0">
+      <div className="agency-theme relative z-0">
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
