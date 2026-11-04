@@ -10,6 +10,7 @@ const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
+  const [onHero, setOnHero] = useState(location.pathname === "/");
 
   const handleNavClick = (navId: string) => {
     if (navId === "book-project") {
@@ -74,11 +75,28 @@ const Navbar = () => {
     };
   }, []);
 
+  // The hero is dark, so the bar switches to light text while it sits over it.
+  useEffect(() => {
+    const updateOnHero = () => {
+      const hero = document.querySelector<HTMLElement>(".agency-hero");
+      setOnHero(!!hero && hero.getBoundingClientRect().bottom > 80);
+    };
+
+    updateOnHero();
+    window.addEventListener("scroll", updateOnHero);
+    window.addEventListener("resize", updateOnHero);
+
+    return () => {
+      window.removeEventListener("scroll", updateOnHero);
+      window.removeEventListener("resize", updateOnHero);
+    };
+  }, [location.pathname]);
+
   return (
     <nav
       className={`fixed top-0 z-20 flex w-full items-center py-5 px-6 ${
         scrolled ? "bg-primary" : "bg-transparent"
-      }`}
+      } ${onHero ? "nav-on-hero" : ""}`}
     >
       <div className="mx-auto flex w-full max-w-7xl items-center justify-between">
         {/* Logo and Hamburger Menu Container */}

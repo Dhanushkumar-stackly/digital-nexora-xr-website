@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Manrope:wght@400;500;600;700;800&display=swap");
 
 .agency-theme {
   --agency-paper: #f5f3ed;
@@ -24,8 +24,7 @@
 .agency-theme h1,
 .agency-theme h2,
 .agency-theme h3,
-.agency-theme h4,
-.agency-theme .agency-wordmark {
+.agency-theme h4 {
   font-family: "Manrope", sans-serif;
 }
 
@@ -105,49 +104,149 @@
 }
 
 .agency-hero {
-  min-height: min(880px, 100svh);
+  position: relative;
+  overflow: hidden;
   background:
-    radial-gradient(ellipse at 80% 45%, rgba(213, 233, 94, 0.23), transparent 27rem),
-    var(--agency-paper);
+    radial-gradient(ellipse 55% 70% at 74% 48%, rgba(37, 99, 235, 0.26), transparent 70%),
+    radial-gradient(ellipse 80% 90% at 70% 45%, #142d52, transparent 72%),
+    linear-gradient(160deg, #080f1d 0%, #101b30 100%);
 }
 
-.agency-hero-grid {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  opacity: 0.36;
-  background-image: linear-gradient(to right, rgba(23, 25, 21, 0.05) 1px, transparent 1px);
-  background-size: 8.333333% 100%;
-  mask-image: linear-gradient(to bottom, transparent, black 20%, black 82%, transparent);
+.agency-theme .agency-hero * {
+  font-family: "Inter", sans-serif;
 }
 
 .agency-hero-inner {
-  min-height: min(880px, 100svh);
-  padding-top: 9rem;
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  align-items: center;
+  gap: 2.5rem;
+  max-width: 1200px;
+  min-height: 760px;
+  margin: 0 auto;
+  padding: 7.5rem 1.5rem 5rem;
 }
 
-.agency-wordmark {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  font-size: clamp(3.2rem, 7.2vw, 7.5rem);
-  line-height: 0.87;
-  letter-spacing: -0.095em;
+.agency-hero-label {
+  color: #60a5fa;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
 }
 
-.agency-word {
+.agency-theme .agency-hero-title {
+  margin-top: 1.25rem;
+  color: #ffffff;
+  font-family: "Manrope", sans-serif;
+  font-size: clamp(2.25rem, 1.6rem + 2.8vw, 3.75rem);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+
+.agency-theme .agency-hero-title span {
   display: block;
-  white-space: nowrap;
+  font-family: inherit;
 }
 
-.agency-word-accent {
-  color: var(--agency-accent);
+.agency-hero-description {
+  max-width: 34rem;
+  margin-top: 1.5rem;
+  color: #cbd5e1;
+  font-size: clamp(1rem, 0.95rem + 0.2vw, 1.125rem);
+  line-height: 1.65;
 }
 
-.agency-word-dark {
-  color: var(--agency-ink);
+.agency-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.875rem;
+  margin-top: 2.25rem;
 }
 
+.agency-button-primary,
+.agency-button-secondary {
+  display: inline-flex;
+  min-height: 3.25rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.625rem;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color 180ms ease, border-color 180ms ease, transform 180ms ease;
+}
+
+.agency-button-primary {
+  background: #2563eb;
+  color: #ffffff;
+}
+
+.agency-button-primary:hover {
+  background: #1d4ed8;
+  transform: translateY(-1px);
+}
+
+.agency-button-secondary {
+  border: 1px solid rgba(96, 165, 250, 0.45);
+  color: #ffffff;
+}
+
+.agency-button-secondary:hover {
+  border-color: #60a5fa;
+  background: rgba(96, 165, 250, 0.1);
+  transform: translateY(-1px);
+}
+
+.agency-button-primary:focus-visible,
+.agency-button-secondary:focus-visible {
+  outline: 3px solid rgba(96, 165, 250, 0.6);
+  outline-offset: 3px;
+}
+
+.agency-hero-process {
+  margin-top: 2.25rem;
+  color: #94a3b8;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.agency-hero-art {
+  position: relative;
+  width: 100%;
+  max-width: 520px;
+  aspect-ratio: 1 / 1;
+  margin: 0 auto;
+}
+
+/* Navbar while it sits over the dark hero */
+.agency-theme nav {
+  transition: background-color 200ms ease;
+}
+
+.agency-theme nav.nav-on-hero {
+  background: transparent !important;
+}
+
+.agency-theme nav.nav-on-hero p {
+  color: #ffffff !important;
+}
+
+.agency-theme nav.nav-on-hero > div > ul button {
+  color: #cbd5e1 !important;
+}
+
+.agency-theme nav.nav-on-hero > div > ul button:hover,
+.agency-theme nav.nav-on-hero > div > ul button:focus-visible {
+  color: #ffffff !important;
+}
+
+.agency-theme nav.nav-on-hero img {
+  filter: brightness(0) invert(1) !important;
+}
+
+/* Highlight behind a word in editorial headings */
 .agency-word-last {
   position: relative;
   z-index: 0;
@@ -165,103 +264,6 @@
   transform: rotate(-2deg);
 }
 
-.agency-hero-tagline {
-  color: var(--agency-muted);
-  letter-spacing: -0.035em;
-}
-
-.agency-button-primary,
-.agency-button-secondary {
-  display: inline-flex;
-  min-height: 3.25rem;
-  align-items: center;
-  justify-content: center;
-  gap: 0.75rem;
-  border-radius: 999px;
-  padding: 0.75rem 1.35rem;
-  font-size: 0.95rem;
-  font-weight: 700;
-  text-decoration: none;
-  transition: background-color 180ms ease, border-color 180ms ease, color 180ms ease, transform 180ms ease;
-}
-
-.agency-button-primary {
-  background: var(--agency-ink);
-  color: var(--agency-white);
-}
-
-.agency-button-primary span {
-  color: inherit;
-  font-size: 1.15rem;
-}
-
-.agency-button-primary:hover {
-  background: var(--agency-accent);
-  color: white;
-  transform: translateY(-2px);
-}
-
-.agency-button-secondary {
-  border: 1px solid var(--agency-line);
-  color: var(--agency-ink);
-}
-
-.agency-button-secondary:hover {
-  border-color: var(--agency-ink);
-  transform: translateY(-2px);
-}
-
-.agency-button-primary:focus-visible,
-.agency-button-secondary:focus-visible {
-  outline: 3px solid rgba(241, 90, 59, 0.35);
-  outline-offset: 3px;
-}
-
-.agency-hero-art {
-  display: grid;
-  place-items: center;
-}
-
-.agency-globe-glow {
-  position: absolute;
-  inset: 12%;
-  border-radius: 50%;
-  background:
-    radial-gradient(circle at 35% 35%, rgba(6, 182, 212, 0.35), transparent 55%),
-    radial-gradient(circle at 68% 65%, rgba(236, 72, 153, 0.28), transparent 55%),
-    radial-gradient(circle, rgba(139, 92, 246, 0.25) 0%, transparent 70%);
-  filter: blur(12px);
-}
-
-.agency-hero-art canvas {
-  position: relative;
-}
-
-.agency-scroll-cue {
-  position: absolute;
-  bottom: 2.5rem;
-  left: 50%;
-  display: grid;
-  width: 34px;
-  height: 52px;
-  place-items: start center;
-  padding: 8px;
-  border: 1px solid rgba(23, 25, 21, 0.3);
-  border-radius: 999px;
-  transform: translateX(-50%);
-}
-
-.agency-scroll-cue span {
-  width: 6px;
-  height: 10px;
-  border-radius: 999px;
-  background: var(--agency-accent);
-  animation: agency-scroll 1.5s ease-in-out infinite;
-}
-
-@keyframes agency-scroll {
-  50% { transform: translateY(18px); }
-}
 
 .agency-theme .contact-badges-container {
   max-width: 1040px;
@@ -689,32 +691,15 @@
 }
 
 @media (max-width: 1023px) {
-  .agency-hero,
   .agency-hero-inner {
-    min-height: auto;
-  }
-
-  .agency-hero-inner {
-    padding-top: 10rem;
-    padding-bottom: 7rem;
+    grid-template-columns: minmax(0, 1fr);
+    min-height: 0;
+    padding-top: 7.5rem;
+    padding-bottom: 3.5rem;
   }
 
   .agency-hero-art {
-    margin-top: 2.5rem;
-  }
-}
-
-@media (min-width: 768px) and (max-width: 1023px) {
-  .agency-hero-inner {
-    grid-template-columns: minmax(0, 1.1fr) minmax(250px, 0.9fr);
-    padding-top: 8rem;
-    padding-bottom: 6rem;
-  }
-
-  .agency-hero-art {
-    width: min(40vw, 390px);
-    height: min(40vw, 390px);
-    margin-top: 0;
+    max-width: min(80vw, 420px);
   }
 }
 
@@ -725,13 +710,13 @@
 }
 
 @media (max-width: 639px) {
-  .agency-wordmark {
-    font-size: clamp(2.55rem, 12vw, 4rem);
-  }
-
   .agency-hero-inner {
     padding-right: 1.25rem;
     padding-left: 1.25rem;
+  }
+
+  .agency-theme .agency-hero-title {
+    font-size: clamp(2.25rem, 10vw, 2.5rem);
   }
 
   .agency-theme nav p {
@@ -743,17 +728,8 @@
     gap: 0.25rem;
   }
 
-  .agency-button-primary,
-  .agency-button-secondary {
-    min-height: 3rem;
-    padding-right: 1.1rem;
-    padding-left: 1.1rem;
-    font-size: 0.88rem;
-  }
-
-  .agency-hero-art {
-    width: min(78vw, 310px);
-    height: min(78vw, 310px);
+  .agency-hero-actions > * {
+    flex: 1 1 100%;
   }
 
     .agency-theme #digitalmarketing,
@@ -777,8 +753,9 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .agency-scroll-cue span {
-    animation: none;
+  .agency-button-primary:hover,
+  .agency-button-secondary:hover {
+    transform: none;
   }
 }
 

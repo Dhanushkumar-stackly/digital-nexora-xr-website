@@ -1,62 +1,63 @@
-import { motion } from "framer-motion";
+import { Suspense, lazy } from "react";
+import { MotionConfig, motion } from "framer-motion";
 import { Link } from "react-router-dom";
 
-import HeroMarketingCanvas from "../canvas/HeroMarketing";
+const HeroNetworkCanvas = lazy(() => import("../canvas/HeroNetwork"));
+
+const fadeIn = (delay: number) => ({
+  initial: { opacity: 0, y: 16 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.6, delay, ease: "easeOut" },
+});
 
 const Hero = () => {
   return (
-    <section className="agency-hero relative mx-auto min-h-[760px] w-full overflow-hidden">
-      <div className="agency-hero-grid" aria-hidden="true" />
+    <MotionConfig reducedMotion="user">
+      <section className="agency-hero">
+        <div className="agency-hero-inner">
+          <div className="agency-hero-copy">
+            <motion.p className="agency-hero-label" {...fadeIn(0)}>
+              DIGITAL GROWTH PARTNER
+            </motion.p>
 
-      <div className="agency-hero-inner relative z-10 mx-auto grid min-h-[760px] max-w-7xl items-center px-6 pb-24 pt-32 sm:px-10 lg:grid-cols-[1.15fr_0.85fr] lg:px-16 lg:pt-28">
-        <motion.div
-          className="agency-hero-copy relative z-10"
-          initial={{ opacity: 0, y: 28 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.75, ease: "easeOut" }}
-        >
-          <h1 className="agency-wordmark font-black uppercase">
-            <span className="agency-word agency-word-accent">DIGITAL</span>
-            <span className="agency-word agency-word-dark">NEXORA</span>
-            <span className="agency-word agency-word-dark agency-word-last">XR WEBTECH</span>
-          </h1>
+            <motion.h1 className="agency-hero-title" {...fadeIn(0.08)}>
+              <span>Build Your Digital Presence.</span>
+              <span>Grow Your Business.</span>
+            </motion.h1>
 
-          <motion.p
-            className="agency-hero-tagline mt-6 max-w-xl text-xl font-medium leading-relaxed sm:text-2xl lg:mt-8"
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.25 }}
-          >
-          We turn search visibility and social influence into real business growth.
-          </motion.p>
+            <motion.p className="agency-hero-description" {...fadeIn(0.16)}>
+              Strategic digital marketing, SEO, social media and website solutions designed to help
+              businesses strengthen their online presence and grow.
+            </motion.p>
 
-          <div className="agency-hero-actions mt-8 flex flex-wrap items-center gap-4">
-            <Link className="agency-button-primary" to="/book-project">
-              Start a project
-              <span aria-hidden="true">↗</span>
-            </Link>
-            <a className="agency-button-secondary" href="#digitalmarketing">
-              Explore our services
-            </a>
+            <motion.div className="agency-hero-actions" {...fadeIn(0.24)}>
+              <Link className="agency-button-primary" to="/book-project">
+                Book a Consultation
+              </Link>
+              <a className="agency-button-secondary" href="#digitalmarketing">
+                Explore Our Services
+              </a>
+            </motion.div>
+
+            <motion.p className="agency-hero-process" {...fadeIn(0.32)}>
+              Discover. Analyse. Strategize. Execute. Optimise.
+            </motion.p>
           </div>
-        </motion.div>
 
-        <motion.div
-          className="agency-hero-art relative mx-auto mt-10 h-[300px] w-[300px] sm:h-[390px] sm:w-[390px] lg:mt-0 lg:h-[500px] lg:w-[500px]"
-          aria-hidden="true"
-          initial={{ opacity: 0, scale: 0.88, rotate: -8 }}
-          animate={{ opacity: 1, scale: 1, rotate: 0 }}
-          transition={{ duration: 1, delay: 0.2, ease: "easeOut" }}
-        >
-          <div className="agency-globe-glow" />
-          <HeroMarketingCanvas />
-        </motion.div>
-      </div>
-
-      <a className="agency-scroll-cue" href="#about" aria-label="Scroll to about section">
-        <span />
-      </a>
-    </section>
+          <motion.div
+            className="agency-hero-art"
+            aria-hidden="true"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.9, delay: 0.2, ease: "easeOut" }}
+          >
+            <Suspense fallback={null}>
+              <HeroNetworkCanvas />
+            </Suspense>
+          </motion.div>
+        </div>
+      </section>
+    </MotionConfig>
   );
 };
 
