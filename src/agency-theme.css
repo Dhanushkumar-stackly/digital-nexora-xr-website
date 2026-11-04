@@ -179,6 +179,7 @@
 }
 
 .agency-button-primary {
+  gap: 0.5rem;
   background: #2563eb;
   color: #ffffff;
 }

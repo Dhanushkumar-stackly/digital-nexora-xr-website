@@ -32,7 +32,7 @@ const Hero = () => {
 
             <motion.div className="agency-hero-actions" {...fadeIn(0.24)}>
               <Link className="agency-button-primary" to="/book-project">
-                Book a Consultation
+                Book a Free Consultation <span aria-hidden="true">→</span>
               </Link>
               <a className="agency-button-secondary" href="#digitalmarketing">
                 Explore Our Services

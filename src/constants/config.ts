@@ -40,12 +40,12 @@ type TConfig = {
 
 export const config: TConfig = {
   html: {
-    title: "Digital Nexora XR Webtech | DNX",
-    fullName: "Digital Nexora XR Webtech",
+    title: "HD NEXORA WEBTEC",
+    fullName: "HD NEXORA WEBTEC",
     email: "digitalnexorawebtech0401@gmail.com",
   },
   hero: {
-    name: "DNX - DIGITAL NEXORAXR WEBTECH",
+    name: "HD NEXORA WEBTEC",
     p: ["Create. Connect. Convert"],
   },
   contact: {
@@ -81,7 +81,7 @@ export const config: TConfig = {
     feedbacks: {
       p: "What others say",
       h2: "Testimonials.",
-      content: `Hear from our satisfied clients and partners about their experience working with DNX - Digital Nexora XR WebTech. We pride ourselves on delivering exceptional results and building lasting relationships through innovation, professionalism, and dedication to excellence.`,
+      content: `Hear from our satisfied clients and partners about their experience working with HD NEXORA WEBTEC. We pride ourselves on delivering exceptional results and building lasting relationships through innovation, professionalism, and dedication to excellence.`,
     },
   },
 };

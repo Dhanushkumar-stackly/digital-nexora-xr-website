@@ -121,7 +121,7 @@ const testimonials: TTestimonial[] = [];
 const experiences: TExperience[] = [
   {
     title: "Prompt Engineer & AI Developer",
-    companyName: "DNX - Digital Nexoraxr WebTech",
+    companyName: "HD NEXORA WEBTEC",
     icon: starbucks,
     iconBg: "#383E56",
     date: "2023 - Present",

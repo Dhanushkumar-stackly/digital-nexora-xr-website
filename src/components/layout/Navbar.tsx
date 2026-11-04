@@ -110,11 +110,11 @@ const Navbar = () => {
           >
             <img
               src={Assets.dnxLogo ?? ""}
-              alt="DNX Logo"
+              alt="HD NEXORA WEBTEC logo"
               className="h-[60px] w-[66px] object-contain transition-transform duration-300 group-hover:scale-105"
             />
             <p className="flex cursor-pointer text-[18px] font-bold text-white transition-all duration-300 group-hover:tracking-wider">
-              Digital Nexora XR
+              HD NEXORA WEBTEC
             </p>
           </Link>
 

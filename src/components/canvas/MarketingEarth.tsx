@@ -14,7 +14,7 @@ import jsIcon from "../../assets/tech/javascript.png";
 import mongoIcon from "../../assets/tech/mongodb.png";
 import nodeIcon from "../../assets/tech/nodejs.png";
 
-// Brand colors from Digital Nexora XR
+// Brand colors from HD NEXORA WEBTEC
 const BRAND_COLORS = {
   blue: "#4169E1",
   cyan: "#00CED1",

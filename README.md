@@ -1,4 +1,4 @@
-# DNX - DIGITAL NEXORAXR WEBTECH
+# HD NEXORA WEBTEC
 
 ## 3D Portfolio - Prompt Engineer & Full Stack AI Developer
 
@@ -6,7 +6,7 @@
 
 ## 📝 Description
 
-**DNX - DIGITAL NEXORAXR WEBTECH** is an advanced 3D portfolio showcasing cutting-edge AI and web development projects. Built with React.js, TypeScript, and Three.js, this portfolio demonstrates expertise in prompt engineering, full-stack AI development, computer vision, IoT, and immersive 3D web experiences.
+**HD NEXORA WEBTEC** is an advanced 3D portfolio showcasing cutting-edge AI and web development projects. Built with React.js, TypeScript, and Three.js, this portfolio demonstrates expertise in prompt engineering, full-stack AI development, computer vision, IoT, and immersive 3D web experiences.
 
 ### Featured Advanced Projects:
 - **Real Time Face Mask Detection** - Computer Vision with OpenCV & TensorFlow
@@ -124,7 +124,7 @@ reactjs18-3d-portfolio/
 ## ✨ Technologies Used
 
 ### Frontend Technologies
-<details><summary><b>DNX Portfolio</b> is built using cutting-edge frontend technologies:</summary>
+<details><summary><b>HD NEXORA WEBTEC</b> is built using cutting-edge frontend technologies:</summary>
 
 - **[TypeScript 5.2.2](https://www.typescriptlang.org/)** - Typed superset of JavaScript for robust code
 - **[React 18.2.0](https://reactjs.org/)** - Modern UI library for building interactive interfaces
