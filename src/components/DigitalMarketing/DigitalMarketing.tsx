@@ -25,7 +25,7 @@ const SERVICES = [
 
 const DigitalMarketing: React.FC = () => {
   return (
-    <section id="digitalmarketing" className="site-section">
+    <section id="services" className="site-section">
       <div className="site-container">
         <FloatingTitle subtitle="Digital Solutions" title="Digital Marketing." />
 

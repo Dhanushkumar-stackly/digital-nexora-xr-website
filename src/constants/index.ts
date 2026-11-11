@@ -3,22 +3,13 @@ import type { TNavLink, TTeamMember } from "../types";
 import { dhanushImg, hariharasudhanImg } from "../assets";
 
 export const navLinks: TNavLink[] = [
-  {
-    id: "about",
-    title: "Home",
-  },
-  {
-    id: "digitalmarketing",
-    title: "Digital Marketing",
-  },
-  {
-    id: "book-project",
-    title: "Book the Project",
-  },
-  {
-    id: "contact",
-    title: "Contact",
-  },
+  { id: "home", title: "Home" },
+  { id: "about", title: "About" },
+  { id: "services", title: "Services" },
+  { id: "industries", title: "Industries" },
+  { id: "pricing", title: "Pricing" },
+  { id: "work", title: "Our Work" },
+  { id: "contact", title: "Contact" },
 ];
 
 const teamMembers: TTeamMember[] = [

@@ -1,5 +1,8 @@
 import { Suspense, lazy } from "react";
 import { AboutUs, Hero, Contact } from "../components";
+import Pricing from "../components/sections/Pricing";
+import Industries from "../components/sections/Industries";
+import OurWork from "../components/sections/OurWork";
 
 const DigitalMarketing = lazy(() => import("../components/DigitalMarketing/DigitalMarketing"));
 
@@ -46,10 +49,13 @@ const Home = () => {
           </a>
         </div>
 
-        <Suspense fallback={<div className="min-h-[420px] flex items-center justify-center">Loading section…</div>}>
+        <AboutUs />
+        <Suspense fallback={<div className="min-h-[420px]" />}>
           <DigitalMarketing />
         </Suspense>
-        <AboutUs />
+        <Pricing />
+        <Industries />
+        <OurWork />
         <Contact />
       </div>
     </div>
