@@ -19,7 +19,7 @@ const valid = {
   budget: "₹15,000 – ₹25,000 / month",
   message: "Need more local enquiries.",
   website: "",
-  startedAt: NOW - 20_000,
+  fillMs: 20_000,
 };
 
 let ipCounter = 0;
@@ -76,7 +76,7 @@ describe("processConsultation", () => {
   });
 
   it("silently drops submissions sent too quickly", async () => {
-    const { promise, fetchImpl } = run({ ...valid, startedAt: NOW - 500 });
+    const { promise, fetchImpl } = run({ ...valid, fillMs: 500 });
     expect((await promise).status).toBe(200);
     expect(fetchImpl).not.toHaveBeenCalled();
   });
@@ -128,6 +128,22 @@ describe("isRateLimited", () => {
     const results = Array.from({ length: 6 }, (_, i) => isRateLimited("1.2.3.4", NOW + i, store));
     expect(results).toEqual([false, false, false, false, false, true]);
     expect(isRateLimited("1.2.3.4", NOW + 61 * 60 * 1000, store)).toBe(false);
+  });
+});
+
+describe("fill time", () => {
+  it("accepts a slow, genuine submission", async () => {
+    const { promise, fetchImpl } = run({ ...valid, fillMs: 45_000 });
+    expect((await promise).body.reference).toMatch(/^HDN-/);
+    expect(fetchImpl).toHaveBeenCalled();
+  });
+
+  it("drops submissions with no fill time", async () => {
+    const withoutTiming: Partial<typeof valid> = { ...valid };
+    delete withoutTiming.fillMs;
+    const { promise, fetchImpl } = run(withoutTiming);
+    expect((await promise).status).toBe(200);
+    expect(fetchImpl).not.toHaveBeenCalled();
   });
 });
 

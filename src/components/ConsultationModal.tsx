@@ -106,7 +106,7 @@ export default function ConsultationModal({ isOpen, topic, onClose }: Consultati
       const res = await fetch('/api/consultation', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...formData, website, startedAt: startedAt.current }),
+        body: JSON.stringify({ ...formData, website, fillMs: Date.now() - startedAt.current }),
       });
       const data = await res.json().catch(() => ({}));
 

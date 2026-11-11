@@ -158,8 +158,9 @@ export async function processConsultation(
   const data = body as Record<string, unknown>;
 
   // Bots fill the hidden field or submit instantly; answer as if it worked so they don't adapt.
-  const startedAt = Number(data.startedAt);
-  if (clean(data.website, 200) || !startedAt || now - startedAt < MIN_FILL_MS) {
+  // Elapsed time is measured in the browser, so a visitor's wrong clock can't make a real enquiry look like a bot.
+  const fillMs = Number(data.fillMs);
+  if (clean(data.website, 200) || !Number.isFinite(fillMs) || fillMs < MIN_FILL_MS) {
     return { status: 200, body: { message: "Thank you. Your request has been received." } };
   }
 
