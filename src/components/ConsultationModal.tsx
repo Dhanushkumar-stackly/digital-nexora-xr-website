@@ -85,21 +85,25 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 z-40 bg-black/50"
+            className="fixed inset-0 z-40 bg-[#02060f]/75 backdrop-blur-sm"
           />
 
           {/* Modal */}
+          <div className="pointer-events-none fixed inset-0 z-50 flex items-center justify-center p-4">
           <motion.div
+            role="dialog"
+            aria-modal="true"
+            aria-label="Free consultation request"
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            className="fixed top-1/2 left-1/2 z-50 w-full max-w-md -translate-x-1/2 -translate-y-1/2 rounded-xl bg-white p-8 shadow-2xl sm:max-w-lg"
+            className="surface-card pointer-events-auto max-h-[calc(100vh-2rem)] w-full max-w-lg overflow-y-auto p-6 shadow-2xl sm:p-8"
           >
             {submitted ? (
               <div className="text-center">
                 <div className="mb-4 flex justify-center">
-                  <div className="flex h-16 w-16 items-center justify-center rounded-full bg-green-100">
-                    <svg className="h-8 w-8 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                  <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#142d52]">
+                    <svg className="h-8 w-8 text-[#60a5fa]" fill="currentColor" viewBox="0 0 20 20">
                       <path
                         fillRule="evenodd"
                         d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
@@ -108,18 +112,18 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
                     </svg>
                   </div>
                 </div>
-                <h3 className="text-lg font-bold text-gray-900">Thank you!</h3>
-                <p className="mt-2 text-sm text-gray-600">
+                <h3 className="text-xl font-bold text-white">Thank you!</h3>
+                <p className="mt-2 text-sm text-[#cbd5e1]">
                   We've received your consultation request. We'll be in touch shortly.
                 </p>
               </div>
             ) : (
               <>
                 <div className="mb-6 flex items-center justify-between">
-                  <h2 className="text-2xl font-bold text-gray-900">Free Consultation</h2>
+                  <h2 className="text-2xl font-bold text-white">Free Consultation</h2>
                   <button
                     onClick={onClose}
-                    className="text-gray-400 hover:text-gray-600"
+                    className="text-xl text-[#94a3b8] hover:text-white"
                     aria-label="Close"
                   >
                     ✕
@@ -129,26 +133,26 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div className="grid gap-4 sm:grid-cols-2">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700">Name *</label>
+                      <label className="form-label block">Name *</label>
                       <input
                         type="text"
                         name="name"
                         value={formData.name}
                         onChange={handleChange}
                         required
-                        className="mt-1 w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-blue-500 focus:outline-none"
+                        className="form-field mt-1"
                         placeholder="Your name"
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700">Business Name *</label>
+                      <label className="form-label block">Business Name *</label>
                       <input
                         type="text"
                         name="businessName"
                         value={formData.businessName}
                         onChange={handleChange}
                         required
-                        className="mt-1 w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-blue-500 focus:outline-none"
+                        className="form-field mt-1"
                         placeholder="Your business"
                       />
                     </div>
@@ -156,26 +160,26 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
 
                   <div className="grid gap-4 sm:grid-cols-2">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700">Email *</label>
+                      <label className="form-label block">Email *</label>
                       <input
                         type="email"
                         name="email"
                         value={formData.email}
                         onChange={handleChange}
                         required
-                        className="mt-1 w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-blue-500 focus:outline-none"
+                        className="form-field mt-1"
                         placeholder="your@email.com"
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700">Phone *</label>
+                      <label className="form-label block">Phone *</label>
                       <input
                         type="tel"
                         name="phone"
                         value={formData.phone}
                         onChange={handleChange}
                         required
-                        className="mt-1 w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-blue-500 focus:outline-none"
+                        className="form-field mt-1"
                         placeholder="+1 (555) 000-0000"
                       />
                     </div>
@@ -183,13 +187,13 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
 
                   <div className="grid gap-4 sm:grid-cols-2">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700">Service *</label>
+                      <label className="form-label block">Service *</label>
                       <select
                         name="service"
                         value={formData.service}
                         onChange={handleChange}
                         required
-                        className="mt-1 w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-blue-500 focus:outline-none"
+                        className="form-field mt-1"
                       >
                         <option value="">Select a service</option>
                         {SERVICES.map((svc) => (
@@ -200,13 +204,13 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
                       </select>
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700">Budget *</label>
+                      <label className="form-label block">Budget *</label>
                       <select
                         name="budget"
                         value={formData.budget}
                         onChange={handleChange}
                         required
-                        className="mt-1 w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-blue-500 focus:outline-none"
+                        className="form-field mt-1"
                       >
                         <option value="">Select budget</option>
                         {BUDGETS.map((b) => (
@@ -219,30 +223,30 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700">Message</label>
+                    <label className="form-label block">Message</label>
                     <textarea
                       name="message"
                       value={formData.message}
                       onChange={handleChange}
                       rows={3}
-                      className="mt-1 w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-blue-500 focus:outline-none"
+                      className="form-field mt-1"
                       placeholder="Tell us about your project..."
                     />
                   </div>
 
-                  {error && <div className="rounded-lg bg-red-50 p-3 text-sm text-red-600">{error}</div>}
+                  {error && <div className="rounded-lg border border-red-400/40 bg-red-500/10 p-3 text-sm text-red-300">{error}</div>}
 
                   <button
                     type="submit"
                     disabled={loading}
-                    className="w-full rounded-lg bg-blue-600 px-4 py-3 font-semibold text-white hover:bg-blue-700 disabled:opacity-50"
+                    className="agency-button-primary w-full"
                   >
                     {loading ? "Sending..." : "Request Consultation"}
                   </button>
 
-                  <p className="text-center text-xs text-gray-500">
+                  <p className="text-center text-xs text-[#94a3b8]">
                     We respect your privacy. Read our{" "}
-                    <a href="#" className="underline hover:text-gray-700">
+                    <a href="#" className="underline hover:text-white">
                       privacy policy
                     </a>
                     .
@@ -251,6 +255,7 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
               </>
             )}
           </motion.div>
+          </div>
         </>
       )}
     </AnimatePresence>

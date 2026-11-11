@@ -28,11 +28,10 @@ const NotFound = () => {
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.2 }}
             style={{
-              background: "linear-gradient(135deg, #FF9933 0%, #FFFFFF 50%, #138808 100%)",
+              background: "linear-gradient(135deg, #60a5fa 0%, #2563eb 100%)",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
               backgroundClip: "text",
-              textShadow: "0 0 30px rgba(255, 153, 51, 0.5)",
             }}
           >
             404
@@ -49,7 +48,7 @@ const NotFound = () => {
           </motion.h2>
 
           <motion.p
-            className="text-lg sm:text-xl text-gray-300 mb-12 max-w-2xl mx-auto"
+            className="text-lg sm:text-xl text-[#cbd5e1] mb-12 max-w-2xl mx-auto"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.6 }}
@@ -66,15 +65,12 @@ const NotFound = () => {
           >
             <Link
               to="/"
-              className="px-8 py-4 bg-gradient-to-r from-purple-500 to-cyan-500 text-white font-semibold rounded-full hover:scale-105 transition-transform duration-300 shadow-lg hover:shadow-purple-500/50"
+              className="agency-button-primary"
             >
               Go to Home
             </Link>
           </motion.div>
 
-          {/* Decorative Elements */}
-          <div className="absolute top-1/4 left-10 w-32 h-32 bg-cyan-500/10 rounded-full blur-3xl animate-pulse"></div>
-          <div className="absolute bottom-1/4 right-10 w-40 h-40 bg-purple-500/10 rounded-full blur-3xl animate-pulse delay-150"></div>
         </motion.div>
       </div>
     </div>

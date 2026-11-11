@@ -205,20 +205,20 @@ ${formData.additionalInfo || 'No additional information provided'}
 
   return (
     <div className="flex flex-col-reverse gap-10 overflow-hidden xl:mt-12 xl:flex-row">
-      <ToastContainer />
+      <ToastContainer theme="dark" />
       <motion.div
         variants={slideIn("left", "tween", 0.2, 1)}
-        className="bg-black-100 flex-[0.75] rounded-2xl p-8"
+        className="surface-card flex-[0.75] p-6 sm:p-8"
       >
         <motion.div variants={textVariant()}>
           <p className={styles.sectionSubText}>Start Your Project</p>
           <h2 className={styles.sectionHeadText}>Book Your Project.</h2>
         </motion.div>
 
-        <form onSubmit={handleSubmit} className="mt-12 flex flex-col gap-6">
+        <form onSubmit={handleSubmit} className="mt-10 flex flex-col gap-6">
           {/* Project Name */}
           <label className="flex flex-col">
-            <span className="mb-4 font-medium text-white">Project Name *</span>
+            <span className="form-label">Project Name *</span>
             <input
               type="text"
               name="projectName"
@@ -226,32 +226,32 @@ ${formData.additionalInfo || 'No additional information provided'}
               onChange={handleChange}
               required
               placeholder="What's your project called?"
-              className="bg-tertiary placeholder:text-secondary rounded-lg border-none px-6 py-4 font-medium text-white outline-none"
+              className="form-field"
             />
           </label>
 
           {/* Organization / Company Name */}
           <label className="flex flex-col">
-            <span className="mb-4 font-medium text-white">Organization / Company Name</span>
+            <span className="form-label">Organization / Company Name</span>
             <input
               type="text"
               name="organizationName"
               value={formData.organizationName}
               onChange={handleChange}
               placeholder="Your organization or company name (optional)"
-              className="bg-tertiary placeholder:text-secondary rounded-lg border-none px-6 py-4 font-medium text-white outline-none"
+              className="form-field"
             />
           </label>
 
           {/* Type of Project */}
           <label className="flex flex-col">
-            <span className="mb-4 font-medium text-white">Type of Project *</span>
+            <span className="form-label">Type of Project *</span>
             <select
               name="projectType"
               value={formData.projectType}
               onChange={handleChange}
               required
-              className="bg-tertiary placeholder:text-secondary rounded-lg border-none px-6 py-4 font-medium text-white outline-none"
+              className="form-field"
             >
               <option value="">Select Project Type</option>
               <option value="website">Website</option>
@@ -263,13 +263,13 @@ ${formData.additionalInfo || 'No additional information provided'}
           {/* Conditional: Types of Website */}
           {shouldShowWebsiteType && (
             <label className="flex flex-col">
-              <span className="mb-4 font-medium text-white">Types of Website *</span>
+              <span className="form-label">Types of Website *</span>
               <select
                 name="websiteType"
                 value={formData.websiteType || ""}
                 onChange={handleChange}
                 required
-                className="bg-tertiary placeholder:text-secondary rounded-lg border-none px-6 py-4 font-medium text-white outline-none"
+                className="form-field"
               >
                 <option value="">Select Website Type</option>
                 <option value="basic">Basic Website</option>
@@ -286,13 +286,13 @@ ${formData.additionalInfo || 'No additional information provided'}
           {/* Conditional: Types of Marketing */}
           {shouldShowMarketingType && (
             <label className="flex flex-col">
-              <span className="mb-4 font-medium text-white">Types of Marketing *</span>
+              <span className="form-label">Types of Marketing *</span>
               <select
                 name="marketingType"
                 value={formData.marketingType || ""}
                 onChange={handleChange}
                 required
-                className="bg-tertiary placeholder:text-secondary rounded-lg border-none px-6 py-4 font-medium text-white outline-none"
+                className="form-field"
               >
                 <option value="">Select Marketing Type</option>
                 <option value="social-media">Social Media Management</option>
@@ -307,7 +307,7 @@ ${formData.additionalInfo || 'No additional information provided'}
 
           {/* Purpose */}
           <label className="flex flex-col">
-            <span className="mb-4 font-medium text-white">Purpose of Project *</span>
+            <span className="form-label">Purpose of Project *</span>
             <textarea
               rows={4}
               name="purpose"
@@ -315,14 +315,14 @@ ${formData.additionalInfo || 'No additional information provided'}
               onChange={handleChange}
               required
               placeholder="Describe the purpose and goals of your project..."
-              className="bg-tertiary placeholder:text-secondary rounded-lg border-none px-6 py-4 font-medium text-white outline-none"
+              className="form-field"
             />
           </label>
 
           {/* Contact Information */}
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             <label className="flex flex-col">
-              <span className="mb-4 font-medium text-white">Your Name *</span>
+              <span className="form-label">Your Name *</span>
               <input
                 type="text"
                 name="name"
@@ -330,12 +330,12 @@ ${formData.additionalInfo || 'No additional information provided'}
                 onChange={handleChange}
                 required
                 placeholder="Your full name"
-                className="bg-tertiary placeholder:text-secondary rounded-lg border-none px-6 py-4 font-medium text-white outline-none"
+                className="form-field"
               />
             </label>
 
             <label className="flex flex-col">
-              <span className="mb-4 font-medium text-white">Your Email *</span>
+              <span className="form-label">Your Email *</span>
               <input
                 type="email"
                 name="email"
@@ -343,13 +343,13 @@ ${formData.additionalInfo || 'No additional information provided'}
                 onChange={handleChange}
                 required
                 placeholder="your.email@example.com"
-                className="bg-tertiary placeholder:text-secondary rounded-lg border-none px-6 py-4 font-medium text-white outline-none"
+                className="form-field"
               />
             </label>
           </div>
 
           <label className="flex flex-col">
-            <span className="mb-4 font-medium text-white">Phone Number *</span>
+            <span className="form-label">Phone Number *</span>
             <input
               type="tel"
               name="phone"
@@ -357,20 +357,20 @@ ${formData.additionalInfo || 'No additional information provided'}
               onChange={handleChange}
               required
               placeholder="+1 (555) 123-4567"
-              className="bg-tertiary placeholder:text-secondary rounded-lg border-none px-6 py-4 font-medium text-white outline-none"
+              className="form-field"
             />
           </label>
 
           {/* Additional Info */}
           <label className="flex flex-col">
-            <span className="mb-4 font-medium text-white">Additional Information</span>
+            <span className="form-label">Additional Information</span>
             <textarea
               rows={3}
               name="additionalInfo"
               value={formData.additionalInfo}
               onChange={handleChange}
               placeholder="Any specific requirements or features you need?"
-              className="bg-tertiary placeholder:text-secondary rounded-lg border-none px-6 py-4 font-medium text-white outline-none"
+              className="form-field"
             />
           </label>
 
@@ -378,7 +378,7 @@ ${formData.additionalInfo || 'No additional information provided'}
             <button
               type="submit"
               disabled={loading}
-              className="bg-tertiary shadow-primary flex-1 rounded-xl px-8 py-3 font-bold text-white shadow-md outline-none transition-all hover:bg-[#1a1a2e]"
+              className="agency-button-primary flex-1"
             >
               {loading ? "Submitting..." : "Book Your Project"}
             </button>

@@ -61,14 +61,14 @@ Message: ${form.message}`.trim();
     >
       <motion.div
         variants={slideIn("left", "tween", 0.2, 1)}
-        className="bg-black-100 flex-[0.75] rounded-2xl p-8"
+        className="surface-card flex-[0.75] p-6 sm:p-8"
       >
         <Header useMotion={false} {...config.contact} />
 
         <form
           ref={formRef}
           onSubmit={handleSubmit}
-          className="mt-12 flex flex-col gap-8"
+          className="mt-10 flex flex-col gap-6"
         >
           {Object.keys(config.contact.form).map((input) => {
             const { span, placeholder } =
@@ -77,14 +77,14 @@ Message: ${form.message}`.trim();
 
             return (
               <label key={input} className="flex flex-col">
-                <span className="mb-4 font-medium text-white">{span}</span>
+                <span className="form-label">{span}</span>
                 <Component
                   type={input === "email" ? "email" : "text"}
                   name={input}
                   value={form[`${input}`]}
                   onChange={handleChange}
                   placeholder={placeholder}
-                  className="bg-tertiary placeholder:text-secondary rounded-lg border-none px-6 py-4 font-medium text-white outline-none"
+                  className="form-field"
                   {...(input === "message" && { rows: 7 })}
                 />
               </label>
@@ -92,7 +92,7 @@ Message: ${form.message}`.trim();
           })}
           <button
             type="submit"
-            className="bg-tertiary shadow-primary w-fit rounded-xl px-8 py-3 font-bold text-white shadow-md outline-none"
+            className="agency-button-primary w-fit"
           >
             {loading ? "Opening WhatsApp..." : "Send via WhatsApp"}
           </button>

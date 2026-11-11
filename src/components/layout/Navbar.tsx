@@ -10,7 +10,6 @@ const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
-  const [onHero, setOnHero] = useState(location.pathname === "/");
 
   const handleNavClick = (navId: string) => {
     if (navId === "book-project") {
@@ -75,30 +74,13 @@ const Navbar = () => {
     };
   }, []);
 
-  // The hero is dark, so the bar switches to light text while it sits over it.
-  useEffect(() => {
-    const updateOnHero = () => {
-      const hero = document.querySelector<HTMLElement>(".agency-hero");
-      setOnHero(!!hero && hero.getBoundingClientRect().bottom > 80);
-    };
-
-    updateOnHero();
-    window.addEventListener("scroll", updateOnHero);
-    window.addEventListener("resize", updateOnHero);
-
-    return () => {
-      window.removeEventListener("scroll", updateOnHero);
-      window.removeEventListener("resize", updateOnHero);
-    };
-  }, [location.pathname]);
-
   return (
     <nav
-      className={`fixed top-0 z-20 flex w-full items-center py-5 px-6 ${
-        scrolled ? "bg-primary" : "bg-transparent"
-      } ${onHero ? "nav-on-hero" : ""}`}
+      className={`site-nav fixed top-0 z-20 flex w-full items-center px-6 py-3 ${
+        scrolled ? "is-scrolled" : ""
+      }`}
     >
-      <div className="mx-auto flex w-full max-w-7xl items-center justify-between">
+      <div className="mx-auto flex w-full max-w-[1200px] items-center justify-between">
         {/* Logo and Hamburger Menu Container */}
         <div className="flex items-center gap-4">
           <Link
@@ -111,9 +93,9 @@ const Navbar = () => {
             <img
               src={Assets.dnxLogo ?? ""}
               alt="HD NEXORA WEBTEC logo"
-              className="h-[60px] w-[66px] object-contain transition-transform duration-300 group-hover:scale-105"
+              className="h-[52px] w-[52px] object-contain transition-transform duration-300 group-hover:scale-105"
             />
-            <p className="flex cursor-pointer text-[18px] font-bold text-white transition-all duration-300 group-hover:tracking-wider">
+            <p className="font-display flex cursor-pointer text-[15px] font-bold tracking-[0.04em] text-white sm:text-[17px]">
               HD NEXORA WEBTEC
             </p>
           </Link>
@@ -140,7 +122,7 @@ const Navbar = () => {
               <button
                 className={`${
                   active === nav.id ? "text-white" : "text-secondary"
-                } cursor-pointer text-[18px] font-medium hover:text-white transition-colors duration-200`}
+                } cursor-pointer text-[15px] font-medium hover:text-white transition-colors duration-200`}
                 onClick={() => handleNavClick(nav.id)}
                 type="button"
               >
@@ -154,13 +136,13 @@ const Navbar = () => {
         <div
           className={`${
             !toggle ? "hidden" : "flex"
-          } black-gradient absolute right-0 top-20 z-10 mx-4 my-2 min-w-[140px] rounded-xl p-6 lg:hidden`}
+          } site-nav-menu absolute right-0 top-20 z-10 mx-4 my-2 min-w-[180px] rounded-xl p-6 lg:hidden`}
         >
           <ul className="flex flex-1 list-none flex-col items-start justify-end gap-4">
             {navLinks.map((nav) => (
               <li key={nav.id}>
                 <button
-                  className={`font-poppins cursor-pointer text-[16px] font-medium ${
+                  className={`cursor-pointer text-[16px] font-medium ${
                     active === nav.id ? "text-white" : "text-secondary"
                   } hover:text-white transition-colors duration-200`}
                   onClick={() => handleNavClick(nav.id)}
