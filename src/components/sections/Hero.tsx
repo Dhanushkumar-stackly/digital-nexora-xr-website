@@ -27,15 +27,21 @@ const Hero = () => {
               <span>Grow Your Business.</span>
             </motion.h1>
 
-            <motion.p className="agency-hero-description" {...fadeIn(0.16)}>
-              Strategic digital marketing, SEO, social media and website solutions designed to help
-              businesses strengthen their online presence and grow.
-            </motion.p>
+            <motion.div className="agency-hero-description" {...fadeIn(0.16)}>
+              <p>
+                We help businesses strengthen their online presence through strategic digital marketing, SEO, social
+                media management, paid advertising and professional website development.
+              </p>
+              <p>
+                From building brand awareness to generating quality enquiries, we create digital solutions aligned with
+                your business goals.
+              </p>
+            </motion.div>
 
             <motion.div className="agency-hero-actions" {...fadeIn(0.24)}>
               <button
                 type="button"
-                onClick={openConsultation}
+                onClick={() => openConsultation()}
                 className="agency-button-primary"
               >
                 Book a Free Consultation <span aria-hidden="true">→</span>

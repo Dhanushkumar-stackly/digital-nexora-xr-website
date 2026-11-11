@@ -1,6 +1,4 @@
-import type { TNavLink, TTeamMember } from "../types";
-
-import { dhanushImg, hariharasudhanImg } from "../assets";
+import type { TNavLink } from "../types";
 
 export const navLinks: TNavLink[] = [
   { id: "home", title: "Home" },
@@ -11,22 +9,3 @@ export const navLinks: TNavLink[] = [
   { id: "work", title: "Our Work" },
   { id: "contact", title: "Contact" },
 ];
-
-const teamMembers: TTeamMember[] = [
-  {
-    name: "Dhanush Kumar S",
-    degree: "B.E, EIE",
-    role: "AI Prompt Engineer",
-    specialization: "Full Stack 3D Web Developer",
-    image: dhanushImg,
-  },
-  {
-    name: "Hariharasudhan M",
-    degree: "BBA CA",
-    role: "Finance & Marketing Expert",
-    specialization: "Logistics & Transport Specialist",
-    image: hariharasudhanImg,
-  },
-];
-
-export { teamMembers };

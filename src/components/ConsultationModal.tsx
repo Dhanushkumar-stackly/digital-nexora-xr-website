@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface ConsultationModalProps {
   isOpen: boolean;
+  topic?: string;
   onClose: () => void;
 }
 
@@ -16,7 +17,7 @@ const SERVICES = [
 
 const BUDGETS = ["<$5k", "$5k-$15k", "$15k-$50k", "$50k+"];
 
-export default function ConsultationModal({ isOpen, onClose }: ConsultationModalProps) {
+export default function ConsultationModal({ isOpen, topic, onClose }: ConsultationModalProps) {
   const [formData, setFormData] = useState({
     name: "",
     businessName: "",
@@ -29,6 +30,16 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Replace a message we filled in earlier, but never one the visitor typed.
+  const autoMessage = useRef("");
+  useEffect(() => {
+    if (!isOpen || !topic) return;
+    const previous = autoMessage.current;
+    const next = `I'm interested in ${topic}.`;
+    autoMessage.current = next;
+    setFormData((prev) => (!prev.message || prev.message === previous ? { ...prev, message: next } : prev));
+  }, [isOpen, topic]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;

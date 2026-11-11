@@ -5,12 +5,17 @@ import { ConsultationContext } from "../hooks/useConsultation";
 
 const ConsultationProvider = ({ children }: { children: ReactNode }) => {
   const [open, setOpen] = useState(false);
-  const openConsultation = useCallback(() => setOpen(true), []);
+  const [topic, setTopic] = useState("");
+
+  const openConsultation = useCallback((nextTopic?: string) => {
+    setTopic(nextTopic ?? "");
+    setOpen(true);
+  }, []);
 
   return (
     <ConsultationContext.Provider value={openConsultation}>
       {children}
-      <ConsultationModal isOpen={open} onClose={() => setOpen(false)} />
+      <ConsultationModal isOpen={open} topic={topic} onClose={() => setOpen(false)} />
     </ConsultationContext.Provider>
   );
 };

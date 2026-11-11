@@ -1,5 +1,6 @@
 import { createContext, useContext } from "react";
 
-export const ConsultationContext = createContext<() => void>(() => {});
+// Optional topic pre-fills the popup's message, e.g. the package a visitor chose.
+export const ConsultationContext = createContext<(topic?: string) => void>(() => {});
 
 export const useConsultation = () => useContext(ConsultationContext);
