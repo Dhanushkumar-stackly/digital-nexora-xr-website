@@ -1,12 +1,13 @@
-import { useState } from "react";
+import { Suspense, lazy, useState } from "react";
 import { motion } from "framer-motion";
 import { styles } from "../../constants/styles";
 import { slideIn, textVariant } from "../../utils/motion";
 import { SectionWrapper } from "../../hoc";
-import { EarthCanvas } from "../canvas";
 import emailjs from '@emailjs/browser';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+
+const EarthCanvas = lazy(() => import("../canvas/Earth"));
 
 // Initialize EmailJS
 emailjs.init(import.meta.env.VITE_EMAILJS_PUBLIC_KEY);
@@ -390,7 +391,9 @@ ${formData.additionalInfo || 'No additional information provided'}
         variants={slideIn("right", "tween", 0.2, 1)}
         className="h-[350px] md:h-[550px] xl:h-auto xl:flex-1"
       >
-        <EarthCanvas />
+        <Suspense fallback={null}>
+          <EarthCanvas />
+        </Suspense>
       </motion.div>
     </div>
   );

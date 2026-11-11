@@ -1,184 +1,246 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 
-// In-memory rate limiting (for serverless, consider Redis for production)
-const rateLimitMap = new Map<string, number[]>();
-const RATE_LIMIT_REQUESTS = 3;
-const RATE_LIMIT_WINDOW = 3600000; // 1 hour in milliseconds
+// Keep in sync with src/constants/consultation.ts.
+const SERVICES = [
+  "SEO",
+  "Local SEO",
+  "Social Media Marketing",
+  "Google Ads",
+  "Meta Ads",
+  "Website Development",
+  "Monthly Growth Package",
+  "Not sure yet",
+];
+const BUDGETS = [
+  "Under ₹15,000 / month",
+  "₹15,000 – ₹25,000 / month",
+  "₹25,000 – ₹50,000 / month",
+  "Above ₹50,000 / month",
+  "Project-based quote",
+  "Not sure yet",
+];
 
-function isRateLimited(ip: string): boolean {
-  const now = Date.now();
-  const timestamps = rateLimitMap.get(ip) || [];
-  const recentRequests = timestamps.filter((t) => now - t < RATE_LIMIT_WINDOW);
+const LIMITS = { name: 100, businessName: 120, email: 254, phone: 25, message: 2000 };
+const MIN_FILL_MS = 3000;
+const RATE_LIMIT = { max: 5, windowMs: 60 * 60 * 1000 };
 
-  if (recentRequests.length >= RATE_LIMIT_REQUESTS) {
+export type Enquiry = {
+  name: string;
+  businessName: string;
+  email: string;
+  phone: string;
+  service: string;
+  budget: string;
+  message: string;
+};
+
+export type Env = {
+  RESEND_API_KEY?: string;
+  CONSULTATION_TO_EMAIL?: string;
+  CONSULTATION_FROM_EMAIL?: string;
+  CONSULTATION_BACKUP_EMAIL?: string;
+};
+
+type Result = { status: number; body: Record<string, unknown> };
+
+// Per-instance only: serverless instances don't share memory, so this slows bursts
+// from one client rather than enforcing a global limit.
+const recentByIp = new Map<string, number[]>();
+
+export function isRateLimited(ip: string, now: number, store = recentByIp): boolean {
+  const recent = (store.get(ip) ?? []).filter((t) => now - t < RATE_LIMIT.windowMs);
+  if (recent.length >= RATE_LIMIT.max) {
+    store.set(ip, recent);
     return true;
   }
-
-  recentRequests.push(now);
-  rateLimitMap.set(ip, recentRequests);
+  recent.push(now);
+  store.set(ip, recent);
   return false;
 }
 
-function sanitizeInput(input: string, maxLength: number = 500): string {
-  return input
-    .trim()
-    .slice(0, maxLength)
-    .replace(/<[^>]*>/g, "") // Remove HTML tags
-    .replace(/[^a-zA-Z0-9\s\-.,'@()&]/g, ""); // Remove suspicious characters
-}
+const clean = (value: unknown, max: number) =>
+  typeof value === "string"
+    ? value
+        .normalize("NFC")
+        // Drop control characters except line breaks and tabs.
+        .replace(/\p{Cc}/gu, (c) => ("\n\r\t".includes(c) ? c : ""))
+        .trim()
+        .slice(0, max)
+    : "";
 
-function validateEmail(email: string): boolean {
-  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return regex.test(email) && email.length <= 255;
-}
+const escapeHtml = (value: string) =>
+  value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
 
-function validatePhone(phone: string): boolean {
-  const regex = /^[\d\s\-+()]{7,20}$/;
-  return regex.test(phone);
-}
+const EMAIL_PATTERN = /^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]{2,}$/;
 
-async function sendEmails(
-  formData: {
-    name: string;
-    businessName: string;
-    email: string;
-    phone: string;
-    service: string;
-    budget: string;
-    message: string;
-  }
-): Promise<void> {
-  const resendApiKey = process.env.RESEND_API_KEY;
-
-  if (!resendApiKey) {
-    console.warn("RESEND_API_KEY not configured, skipping email notifications");
-    return;
-  }
-
-  const agencyEmail = process.env.AGENCY_EMAIL || "contact@hdnexorawebtec.com";
-
-  try {
-    // Send email to agency
-    await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${resendApiKey}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        from: "noreply@hdnexorawebtec.com",
-        to: agencyEmail,
-        subject: `New Consultation Request from ${formData.name}`,
-        html: `
-          <h2>New Consultation Request</h2>
-          <p><strong>Name:</strong> ${formData.name}</p>
-          <p><strong>Business:</strong> ${formData.businessName}</p>
-          <p><strong>Email:</strong> ${formData.email}</p>
-          <p><strong>Phone:</strong> ${formData.phone}</p>
-          <p><strong>Service Interested:</strong> ${formData.service}</p>
-          <p><strong>Budget:</strong> ${formData.budget}</p>
-          <p><strong>Message:</strong></p>
-          <p>${formData.message || "No message provided"}</p>
-        `,
-      }),
-    });
-
-    // Send confirmation email to customer
-    await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${resendApiKey}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        from: "noreply@hdnexorawebtec.com",
-        to: formData.email,
-        subject: "We've Received Your Consultation Request",
-        html: `
-          <h2>Thank You, ${formData.name}!</h2>
-          <p>We've received your consultation request and will review the details shortly.</p>
-          <p>Our team will contact you within 24-48 hours at the phone number or email you provided.</p>
-          <p><strong>What's Next?</strong></p>
-          <ul>
-            <li>We'll review your project details</li>
-            <li>Our team will reach out to discuss your needs</li>
-            <li>We'll provide a customized proposal</li>
-          </ul>
-          <p>If you have any questions in the meantime, feel free to reply to this email.</p>
-          <p>Best regards,<br />HD NEXORA WEBTEC Team</p>
-        `,
-      }),
-    });
-  } catch (error) {
-    console.error("Error sending emails:", error);
-    throw new Error("Failed to send confirmation emails");
-  }
-}
-
-export default async function handler(
-  req: VercelRequest,
-  res: VercelResponse
-): Promise<void> {
-  // Only allow POST requests
-  if (req.method !== "POST") {
-    res.status(405).json({ message: "Method not allowed" });
-    return;
-  }
-
-  // Rate limiting
-  const clientIp = (req.headers["x-forwarded-for"] as string)?.split(",")[0] || "unknown";
-  if (isRateLimited(clientIp)) {
-    res.status(429).json({ message: "Too many requests. Please try again later." });
-    return;
-  }
-
-  const { name, businessName, email, phone, service, budget, message } = req.body;
-
-  // Validation
-  if (!name || !businessName || !email || !phone || !service || !budget) {
-    res.status(400).json({ message: "Missing required fields" });
-    return;
-  }
-
-  if (!validateEmail(email)) {
-    res.status(400).json({ message: "Invalid email address" });
-    return;
-  }
-
-  if (!validatePhone(phone)) {
-    res.status(400).json({ message: "Invalid phone number" });
-    return;
-  }
-
-  // Sanitize inputs
-  const sanitized = {
-    name: sanitizeInput(name, 100),
-    businessName: sanitizeInput(businessName, 100),
-    email: email.toLowerCase().trim().slice(0, 255),
-    phone: sanitizeInput(phone, 20),
-    service: sanitizeInput(service, 50),
-    budget: sanitizeInput(budget, 20),
-    message: sanitizeInput(message || "", 1000),
+export function validate(body: Record<string, unknown>): { enquiry?: Enquiry; errors: Record<string, string> } {
+  const enquiry: Enquiry = {
+    name: clean(body.name, LIMITS.name),
+    businessName: clean(body.businessName, LIMITS.businessName),
+    email: clean(body.email, LIMITS.email).toLowerCase(),
+    phone: clean(body.phone, LIMITS.phone),
+    service: clean(body.service, 60),
+    budget: clean(body.budget, 60),
+    message: clean(body.message, LIMITS.message),
   };
+  const errors: Record<string, string> = {};
+
+  if (enquiry.name.length < 2) errors.name = "Please enter your name.";
+  if (enquiry.businessName.length < 2) errors.businessName = "Please enter your business name.";
+  if (!EMAIL_PATTERN.test(enquiry.email)) errors.email = "Please enter a valid email address.";
+  const digits = enquiry.phone.replace(/\D/g, "");
+  if (!/^[+\d\s()-]+$/.test(enquiry.phone) || digits.length < 7 || digits.length > 15) {
+    errors.phone = "Please enter a valid phone number.";
+  }
+  if (!SERVICES.includes(enquiry.service)) errors.service = "Please choose a service.";
+  if (!BUDGETS.includes(enquiry.budget)) errors.budget = "Please choose a budget range.";
+
+  return Object.keys(errors).length ? { errors } : { enquiry, errors };
+}
+
+const rows = (enquiry: Enquiry, reference: string) =>
+  [
+    ["Reference", reference],
+    ["Name", enquiry.name],
+    ["Business", enquiry.businessName],
+    ["Email", enquiry.email],
+    ["Phone", enquiry.phone],
+    ["Service", enquiry.service],
+    ["Budget", enquiry.budget],
+    ["Message", enquiry.message || "—"],
+  ] as const;
+
+const agencyEmail = (enquiry: Enquiry, reference: string) => ({
+  subject: `New consultation request: ${enquiry.businessName} (${reference})`,
+  html: `<h2>New consultation request</h2><table cellpadding="6">${rows(enquiry, reference)
+    .map(([k, v]) => `<tr><td><strong>${k}</strong></td><td>${escapeHtml(v).replace(/\n/g, "<br>")}</td></tr>`)
+    .join("")}</table>`,
+  text: rows(enquiry, reference)
+    .map(([k, v]) => `${k}: ${v}`)
+    .join("\n"),
+});
+
+const customerEmail = (enquiry: Enquiry, reference: string) => ({
+  subject: "We've received your consultation request – HD NEXORA WEBTEC",
+  html: `<p>Hi ${escapeHtml(enquiry.name)},</p>
+<p>Thank you for contacting HD NEXORA WEBTEC. We've received your consultation request for <strong>${escapeHtml(
+    enquiry.service
+  )}</strong>.</p>
+<p>Our team will review your details and get in touch to discuss a suitable digital growth strategy.</p>
+<p>Your reference: <strong>${reference}</strong></p>
+<p>Regards,<br>HD NEXORA WEBTEC<br>Coimbatore, Tamil Nadu, India</p>`,
+  text: `Hi ${enquiry.name},\n\nThank you for contacting HD NEXORA WEBTEC. We've received your consultation request for ${enquiry.service}.\n\nOur team will review your details and get in touch to discuss a suitable digital growth strategy.\n\nYour reference: ${reference}\n\nRegards,\nHD NEXORA WEBTEC\nCoimbatore, Tamil Nadu, India`,
+});
+
+type FetchLike = (url: string, init: RequestInit) => Promise<{ ok: boolean; status: number }>;
+
+const sendEmail = (fetchImpl: FetchLike, apiKey: string, payload: Record<string, unknown>) =>
+  fetchImpl("https://api.resend.com/emails", {
+    method: "POST",
+    headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+
+export async function processConsultation(
+  body: unknown,
+  options: { ip: string; env: Env; now: number; fetchImpl: FetchLike }
+): Promise<Result> {
+  const { ip, env, now, fetchImpl } = options;
+
+  if (!body || typeof body !== "object") {
+    return { status: 400, body: { message: "Invalid request." } };
+  }
+  const data = body as Record<string, unknown>;
+
+  // Bots fill the hidden field or submit instantly; answer as if it worked so they don't adapt.
+  const startedAt = Number(data.startedAt);
+  if (clean(data.website, 200) || !startedAt || now - startedAt < MIN_FILL_MS) {
+    return { status: 200, body: { message: "Thank you. Your request has been received." } };
+  }
+
+  if (isRateLimited(ip, now)) {
+    return { status: 429, body: { message: "Too many requests. Please try again later or contact us on WhatsApp." } };
+  }
+
+  const { enquiry, errors } = validate(data);
+  if (!enquiry) {
+    return { status: 400, body: { message: "Please check the highlighted fields.", errors } };
+  }
+
+  const { RESEND_API_KEY, CONSULTATION_TO_EMAIL, CONSULTATION_FROM_EMAIL, CONSULTATION_BACKUP_EMAIL } = env;
+  if (!RESEND_API_KEY || !CONSULTATION_TO_EMAIL || !CONSULTATION_FROM_EMAIL) {
+    console.error("consultation: email service is not configured");
+    return {
+      status: 503,
+      body: { message: "Online requests are temporarily unavailable. Please contact us on WhatsApp." },
+    };
+  }
+
+  const reference = `HDN-${now.toString(36).toUpperCase()}`;
 
   try {
-    // Send emails (Resend integration)
-    await sendEmails(sanitized);
-
-    // Log the submission (in production, store in database or logging service)
-    console.log("Consultation request received:", {
-      timestamp: new Date().toISOString(),
-      ...sanitized,
+    const agency = await sendEmail(fetchImpl, RESEND_API_KEY, {
+      from: CONSULTATION_FROM_EMAIL,
+      to: [CONSULTATION_TO_EMAIL],
+      ...(CONSULTATION_BACKUP_EMAIL ? { bcc: [CONSULTATION_BACKUP_EMAIL] } : {}),
+      reply_to: enquiry.email,
+      ...agencyEmail(enquiry, reference),
     });
-
-    res.status(200).json({
-      message: "Consultation request received successfully",
-      reference: `CONSULT-${Date.now()}`,
-    });
-  } catch (error) {
-    console.error("Error processing consultation:", error);
-    res.status(500).json({
-      message: "Failed to process your request. Please try again later.",
-    });
+    if (!agency.ok) {
+      console.error(`consultation: agency email failed with status ${agency.status} (${reference})`);
+      return {
+        status: 502,
+        body: { message: "We couldn't send your request right now. Please try again or contact us on WhatsApp." },
+      };
+    }
+  } catch {
+    console.error(`consultation: agency email request errored (${reference})`);
+    return {
+      status: 502,
+      body: { message: "We couldn't send your request right now. Please try again or contact us on WhatsApp." },
+    };
   }
+
+  // The enquiry has reached the agency, so a failed acknowledgement must not fail the request.
+  try {
+    const ack = await sendEmail(fetchImpl, RESEND_API_KEY, {
+      from: CONSULTATION_FROM_EMAIL,
+      to: [enquiry.email],
+      reply_to: CONSULTATION_TO_EMAIL,
+      ...customerEmail(enquiry, reference),
+    });
+    if (!ack.ok) console.error(`consultation: confirmation email failed with status ${ack.status} (${reference})`);
+  } catch {
+    console.error(`consultation: confirmation email request errored (${reference})`);
+  }
+
+  return { status: 200, body: { message: "Thank you. Your request has been received.", reference } };
+}
+
+export default async function handler(req: VercelRequest, res: VercelResponse) {
+  if (req.method !== "POST") {
+    res.setHeader("Allow", "POST");
+    res.status(405).json({ message: "Method not allowed." });
+    return;
+  }
+  if (!String(req.headers["content-type"] ?? "").includes("application/json")) {
+    res.status(415).json({ message: "Requests must be sent as JSON." });
+    return;
+  }
+
+  const forwarded = req.headers["x-forwarded-for"];
+  const ip = (Array.isArray(forwarded) ? forwarded[0] : forwarded)?.split(",")[0]?.trim() || "unknown";
+
+  const result = await processConsultation(req.body, {
+    ip,
+    env: process.env as Env,
+    now: Date.now(),
+    fetchImpl: fetch,
+  });
+  res.status(result.status).json(result.body);
 }

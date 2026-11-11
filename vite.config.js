@@ -1,6 +1,20 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
+// Assign by package path. The object form of manualChunks also pulls shared
+// dependencies (e.g. React's JSX runtime) into the 3D chunks, which made the
+// first page load download three.js.
+const chunkFor = (id) => {
+  // Vite's lazy-import helper otherwise lands in the drei chunk, which drags 3D into the first load.
+  if (id.includes("vite/preload-helper")) return "vendor";
+  if (!id.includes("node_modules")) return undefined;
+  if (/node_modules[\\/]three[\\/]/.test(id)) return "three_core";
+  if (id.includes("@react-three/fiber")) return "r3f";
+  if (id.includes("@react-three/drei")) return "drei";
+  if (/node_modules[\\/](react|react-dom|react-router|react-router-dom|scheduler)[\\/]/.test(id)) return "vendor";
+  return undefined;
+};
+
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
@@ -10,14 +24,7 @@ export default defineConfig({
   build: {
     rollupOptions: {
       output: {
-        manualChunks: {
-          // split common vendor libs into a separate chunk
-          vendor: ['react', 'react-dom', 'react-router-dom', 'react-toastify'],
-          // split 3D-related libs into smaller chunks for better caching and smaller downloads
-          three_core: ['three'],
-          r3f: ['@react-three/fiber'],
-          drei: ['@react-three/drei'],
-        },
+        manualChunks: chunkFor,
       }
     },
     // raise warning limit to 1000 KB (1 MB) — still shows warnings for very large chunks

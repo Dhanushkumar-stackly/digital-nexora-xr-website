@@ -12,10 +12,12 @@ const ConsultationProvider = ({ children }: { children: ReactNode }) => {
     setOpen(true);
   }, []);
 
+  const closeConsultation = useCallback(() => setOpen(false), []);
+
   return (
     <ConsultationContext.Provider value={openConsultation}>
       {children}
-      <ConsultationModal isOpen={open} topic={topic} onClose={() => setOpen(false)} />
+      <ConsultationModal isOpen={open} topic={topic} onClose={closeConsultation} />
     </ConsultationContext.Provider>
   );
 };

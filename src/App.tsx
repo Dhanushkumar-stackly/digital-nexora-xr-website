@@ -1,13 +1,14 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { useEffect } from "react";
+import { Suspense, lazy, useEffect } from "react";
 import { config } from "./constants/config";
 import { Navbar } from "./components";
 import Footer from "./components/layout/Footer";
 import ConsultationProvider from "./components/ConsultationProvider";
 import Home from "./pages/Home";
-import BookProjectPage from "./pages/BookProjectPage";
 import NotFound from "./pages/NotFound";
 import LegalPage from "./pages/LegalPage";
+
+const BookProjectPage = lazy(() => import("./pages/BookProjectPage"));
 
 const App = () => {
   useEffect(() => {
@@ -23,7 +24,14 @@ const App = () => {
           <Navbar />
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/book-project" element={<BookProjectPage />} />
+            <Route
+              path="/book-project"
+              element={
+                <Suspense fallback={<div className="min-h-screen" />}>
+                  <BookProjectPage />
+                </Suspense>
+              }
+            />
             <Route path="/privacy-policy" element={<LegalPage title="Privacy Policy" />} />
             <Route path="/terms-and-conditions" element={<LegalPage title="Terms & Conditions" />} />
             <Route path="*" element={<NotFound />} />
