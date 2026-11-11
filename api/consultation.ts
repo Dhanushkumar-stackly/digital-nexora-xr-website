@@ -39,6 +39,12 @@ export type Env = {
   CONSULTATION_TO_EMAIL?: string;
   CONSULTATION_FROM_EMAIL?: string;
   CONSULTATION_BACKUP_EMAIL?: string;
+  WHATSAPP_TOKEN?: string;
+  WHATSAPP_PHONE_NUMBER_ID?: string;
+  WHATSAPP_NOTIFY_TO?: string;
+  WHATSAPP_TEMPLATE?: string;
+  WHATSAPP_TEMPLATE_LANG?: string;
+  WHATSAPP_API_VERSION?: string;
 };
 
 type Result = { status: number; body: Record<string, unknown> };
@@ -173,9 +179,10 @@ export async function processConsultation(
     return { status: 400, body: { message: "Please check the highlighted fields.", errors } };
   }
 
-  const { RESEND_API_KEY, CONSULTATION_TO_EMAIL, CONSULTATION_FROM_EMAIL, CONSULTATION_BACKUP_EMAIL } = env;
-  if (!RESEND_API_KEY || !CONSULTATION_TO_EMAIL || !CONSULTATION_FROM_EMAIL) {
-    console.error("consultation: email service is not configured");
+  const emailReady = Boolean(env.RESEND_API_KEY && env.CONSULTATION_TO_EMAIL && env.CONSULTATION_FROM_EMAIL);
+  const whatsappReady = Boolean(env.WHATSAPP_TOKEN && env.WHATSAPP_PHONE_NUMBER_ID && env.WHATSAPP_NOTIFY_TO);
+  if (!emailReady && !whatsappReady) {
+    console.error("consultation: no notification channel is configured");
     return {
       status: 503,
       body: { message: "Online requests are temporarily unavailable. Please contact us on WhatsApp." },
@@ -184,43 +191,89 @@ export async function processConsultation(
 
   const reference = `HDN-${now.toString(36).toUpperCase()}`;
 
-  try {
-    const agency = await sendEmail(fetchImpl, RESEND_API_KEY, {
-      from: CONSULTATION_FROM_EMAIL,
-      to: [CONSULTATION_TO_EMAIL],
-      ...(CONSULTATION_BACKUP_EMAIL ? { bcc: [CONSULTATION_BACKUP_EMAIL] } : {}),
-      reply_to: enquiry.email,
-      ...agencyEmail(enquiry, reference),
-    });
-    if (!agency.ok) {
-      console.error(`consultation: agency email failed with status ${agency.status} (${reference})`);
-      return {
-        status: 502,
-        body: { message: "We couldn't send your request right now. Please try again or contact us on WhatsApp." },
-      };
-    }
-  } catch {
-    console.error(`consultation: agency email request errored (${reference})`);
+  // The enquiry counts as received if at least one channel reached the agency.
+  const [emailSent, whatsappSent] = await Promise.all([
+    emailReady ? notifyByEmail(fetchImpl, env, enquiry, reference) : Promise.resolve(false),
+    whatsappReady ? notifyByWhatsApp(fetchImpl, env, enquiry, reference) : Promise.resolve(false),
+  ]);
+  if (!emailSent && !whatsappSent) {
     return {
       status: 502,
       body: { message: "We couldn't send your request right now. Please try again or contact us on WhatsApp." },
     };
   }
 
-  // The enquiry has reached the agency, so a failed acknowledgement must not fail the request.
-  try {
-    const ack = await sendEmail(fetchImpl, RESEND_API_KEY, {
-      from: CONSULTATION_FROM_EMAIL,
-      to: [enquiry.email],
-      reply_to: CONSULTATION_TO_EMAIL,
-      ...customerEmail(enquiry, reference),
-    });
-    if (!ack.ok) console.error(`consultation: confirmation email failed with status ${ack.status} (${reference})`);
-  } catch {
-    console.error(`consultation: confirmation email request errored (${reference})`);
+  if (emailReady) {
+    // The agency already has the enquiry, so a failed acknowledgement must not fail the request.
+    try {
+      const ack = await sendEmail(fetchImpl, env.RESEND_API_KEY!, {
+        from: env.CONSULTATION_FROM_EMAIL,
+        to: [enquiry.email],
+        reply_to: env.CONSULTATION_TO_EMAIL,
+        ...customerEmail(enquiry, reference),
+      });
+      if (!ack.ok) console.error(`consultation: confirmation email failed with status ${ack.status} (${reference})`);
+    } catch {
+      console.error(`consultation: confirmation email request errored (${reference})`);
+    }
   }
 
   return { status: 200, body: { message: "Thank you. Your request has been received.", reference } };
+}
+
+async function notifyByEmail(fetchImpl: FetchLike, env: Env, enquiry: Enquiry, reference: string) {
+  try {
+    const res = await sendEmail(fetchImpl, env.RESEND_API_KEY!, {
+      from: env.CONSULTATION_FROM_EMAIL,
+      to: [env.CONSULTATION_TO_EMAIL],
+      ...(env.CONSULTATION_BACKUP_EMAIL ? { bcc: [env.CONSULTATION_BACKUP_EMAIL] } : {}),
+      reply_to: enquiry.email,
+      ...agencyEmail(enquiry, reference),
+    });
+    if (!res.ok) console.error(`consultation: agency email failed with status ${res.status} (${reference})`);
+    return res.ok;
+  } catch {
+    console.error(`consultation: agency email request errored (${reference})`);
+    return false;
+  }
+}
+
+// WhatsApp template parameters may not contain line breaks, tabs or long runs of spaces.
+const templateText = (value: string, max = 120) => value.replace(/\s+/g, " ").trim().slice(0, max) || "-";
+
+// Business-initiated WhatsApp messages must use a template approved in Meta; see README for its wording.
+export const whatsappPayload = (env: Env, enquiry: Enquiry, reference: string) => ({
+  messaging_product: "whatsapp",
+  to: (env.WHATSAPP_NOTIFY_TO ?? "").replace(/\D/g, ""),
+  type: "template",
+  template: {
+    name: env.WHATSAPP_TEMPLATE || "new_enquiry",
+    language: { code: env.WHATSAPP_TEMPLATE_LANG || "en" },
+    components: [
+      {
+        type: "body",
+        parameters: [reference, enquiry.name, enquiry.businessName, enquiry.phone, enquiry.service, enquiry.budget].map(
+          (value) => ({ type: "text", text: templateText(value) })
+        ),
+      },
+    ],
+  },
+});
+
+async function notifyByWhatsApp(fetchImpl: FetchLike, env: Env, enquiry: Enquiry, reference: string) {
+  const version = env.WHATSAPP_API_VERSION || "v22.0";
+  try {
+    const res = await fetchImpl(`https://graph.facebook.com/${version}/${env.WHATSAPP_PHONE_NUMBER_ID}/messages`, {
+      method: "POST",
+      headers: { Authorization: `Bearer ${env.WHATSAPP_TOKEN}`, "Content-Type": "application/json" },
+      body: JSON.stringify(whatsappPayload(env, enquiry, reference)),
+    });
+    if (!res.ok) console.error(`consultation: WhatsApp notification failed with status ${res.status} (${reference})`);
+    return res.ok;
+  } catch {
+    console.error(`consultation: WhatsApp notification request errored (${reference})`);
+    return false;
+  }
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {

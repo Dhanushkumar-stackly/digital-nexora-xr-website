@@ -48,6 +48,24 @@ Set these in Vercel → Settings → Environment Variables (see `.env.example`):
 Until these are set, the form shows visitors a "temporarily unavailable" message with a WhatsApp link instead of
 pretending to succeed.
 
+## WhatsApp notifications (optional)
+
+Each enquiry can also be sent to the business WhatsApp number through Meta's WhatsApp Cloud API. A request
+succeeds when at least one channel (email or WhatsApp) reaches the business.
+
+1. developers.facebook.com → Create app → Business → add the **WhatsApp** product.
+2. In WhatsApp → API Setup, add the receiving number (e.g. +91 99437 11466) to the "To" list and verify it.
+   The number that *sends* must not be one used in the normal WhatsApp app; Meta's free test number works.
+3. WhatsApp Manager → Message templates → create a **Utility** template named `new_enquiry`, language English,
+   with this body (6 variables, in this order):
+
+   ```
+   New consultation request {{1}}: {{2}} from {{3}}, phone {{4}}, interested in {{5}}, budget {{6}}. Full details are in your email.
+   ```
+
+4. Create a permanent token (Business settings → System users → generate token with `whatsapp_business_messaging`).
+5. Set in Vercel: `WHATSAPP_TOKEN`, `WHATSAPP_PHONE_NUMBER_ID`, `WHATSAPP_NOTIFY_TO`, then redeploy.
+
 ## Domain
 
 `SITE_URL` in `src/constants/seo.ts`, the URLs in `index.html`, `public/robots.txt` and `public/sitemap.xml` use

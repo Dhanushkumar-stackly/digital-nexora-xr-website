@@ -1,7 +1,8 @@
 // @vitest-environment node
 import { describe, expect, it, vi } from "vitest";
 
-import { isRateLimited, processConsultation, validate } from "./consultation";
+import { isRateLimited, processConsultation, validate, whatsappPayload } from "./consultation";
+import type { Enquiry } from "./consultation";
 
 const NOW = 1_800_000_000_000;
 const ENV = {
@@ -151,5 +152,52 @@ describe("control characters", () => {
   it("removes control characters but keeps line breaks", () => {
     const { enquiry } = validate({ ...valid, message: "Line one\u0007\nLine two\u0000" });
     expect(enquiry?.message).toBe("Line one\nLine two");
+  });
+});
+
+describe("WhatsApp notifications", () => {
+  const WA = {
+    WHATSAPP_TOKEN: "wa_test",
+    WHATSAPP_PHONE_NUMBER_ID: "123456",
+    WHATSAPP_NOTIFY_TO: "+91 99437 11466",
+  };
+
+  it("sends a template message when only WhatsApp is configured", async () => {
+    const { promise, fetchImpl } = run(valid, { env: WA as typeof ENV });
+    const result = await promise;
+
+    expect(result.status).toBe(200);
+    expect(fetchImpl).toHaveBeenCalledTimes(1);
+    const [url, init] = fetchImpl.mock.calls[0];
+    expect(url).toBe("https://graph.facebook.com/v22.0/123456/messages");
+    const payload = JSON.parse((init as RequestInit).body as string);
+    expect(payload.to).toBe("919943711466");
+    expect(payload.template.name).toBe("new_enquiry");
+    expect(payload.template.components[0].parameters.map((p: { text: string }) => p.text)).toEqual([
+      result.body.reference,
+      "Priya",
+      "Kovai Interiors",
+      "+91 99437 11466",
+      "Local SEO",
+      "₹15,000 – ₹25,000 / month",
+    ]);
+  });
+
+  it("still succeeds when email fails but WhatsApp gets through", async () => {
+    const fetchImpl = vi.fn((url: string) =>
+      Promise.resolve(url.includes("resend") ? { ok: false, status: 500 } : { ok: true, status: 200 })
+    );
+    const result = await run(valid, { env: { ...ENV, ...WA }, fetchImpl }).promise;
+    expect(result.status).toBe(200);
+  });
+
+  it("fails only when every configured channel fails", async () => {
+    const fetchImpl = vi.fn().mockResolvedValue({ ok: false, status: 500 });
+    expect((await run(valid, { env: { ...ENV, ...WA }, fetchImpl }).promise).status).toBe(502);
+  });
+
+  it("removes line breaks from template parameters", () => {
+    const payload = whatsappPayload(WA, { ...valid, name: "Priya\n\tR" } as Enquiry, "HDN-1");
+    expect(payload.template.components[0].parameters[1].text).toBe("Priya R");
   });
 });
