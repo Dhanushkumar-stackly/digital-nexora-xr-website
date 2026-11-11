@@ -1,6 +1,6 @@
-import { Suspense, lazy } from "react";
+import { Suspense, lazy, useState } from "react";
 import { MotionConfig, motion } from "framer-motion";
-import { Link } from "react-router-dom";
+import ConsultationModal from "../ConsultationModal";
 
 const HeroNetworkCanvas = lazy(() => import("../canvas/HeroNetwork"));
 
@@ -11,8 +11,11 @@ const fadeIn = (delay: number) => ({
 });
 
 const Hero = () => {
+  const [consultationOpen, setConsultationOpen] = useState(false);
+
   return (
     <MotionConfig reducedMotion="user">
+      <ConsultationModal isOpen={consultationOpen} onClose={() => setConsultationOpen(false)} />
       <section className="agency-hero">
         <div className="agency-hero-inner">
           <div className="agency-hero-copy">
@@ -31,9 +34,12 @@ const Hero = () => {
             </motion.p>
 
             <motion.div className="agency-hero-actions" {...fadeIn(0.24)}>
-              <Link className="agency-button-primary" to="/book-project">
+              <button
+                onClick={() => setConsultationOpen(true)}
+                className="agency-button-primary"
+              >
                 Book a Free Consultation <span aria-hidden="true">→</span>
-              </Link>
+              </button>
               <a className="agency-button-secondary" href="#digitalmarketing">
                 Explore Our Services
               </a>
