@@ -8,6 +8,7 @@ import ConsultationProvider from "./components/ConsultationProvider";
 import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
 import LegalPage from "./pages/LegalPage";
+import { termsSections } from "./constants/content";
 
 const BookProjectPage = lazy(() => import("./pages/BookProjectPage"));
 
@@ -38,7 +39,16 @@ const App = () => {
               }
             />
             <Route path="/privacy-policy" element={<LegalPage title="Privacy Policy" />} />
-            <Route path="/terms-and-conditions" element={<LegalPage title="Terms & Conditions" />} />
+            <Route
+              path="/terms-and-conditions"
+              element={
+                <LegalPage
+                  title="Terms & Conditions"
+                  intro="These Terms & Conditions explain the service, payment and working arrangements between HD NEXORA WEBTEC and its clients."
+                  sections={termsSections}
+                />
+              }
+            />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </main>

@@ -18,8 +18,8 @@ export const routeMeta: Record<string, RouteMeta> = {
     indexable: true,
     prerender: true,
   },
-  // Placeholder legal pages stay out of search results until their wording is final.
   "/privacy-policy": {
+    // Placeholder: stays out of search results until its wording is final.
     title: "Privacy Policy | HD NEXORA WEBTEC",
     description: "Privacy policy for HD NEXORA WEBTEC.",
     indexable: false,
@@ -27,8 +27,9 @@ export const routeMeta: Record<string, RouteMeta> = {
   },
   "/terms-and-conditions": {
     title: "Terms & Conditions | HD NEXORA WEBTEC",
-    description: "Terms and conditions for HD NEXORA WEBTEC.",
-    indexable: false,
+    description:
+      "Terms & Conditions for HD NEXORA WEBTEC digital marketing services: monthly service, payment terms, scope, cancellation and results.",
+    indexable: true,
     prerender: true,
   },
   "/book-project": {

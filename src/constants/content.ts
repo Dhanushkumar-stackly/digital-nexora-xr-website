@@ -162,3 +162,98 @@ export const industries = [
 ];
 
 export const approach = ["Strategy First", "Data Driven", "Business Focused", "Continuous Optimisation"];
+
+// A string is a paragraph; a string[] is a bulleted list.
+export const termsSections: { title: string; blocks: (string | string[])[] }[] = [
+  {
+    title: "Monthly Service",
+    blocks: [
+      "HD NEXORA WEBTEC provides digital marketing services on a monthly basis. The selected services, package features and deliverables will be provided as mutually agreed in the client proposal.",
+    ],
+  },
+  {
+    title: "Strategy & Growth",
+    blocks: [
+      "We develop and implement suitable digital marketing strategies based on the client's business, target audience, industry and competitors to improve online visibility, engagement and lead opportunities.",
+    ],
+  },
+  {
+    title: "Performance Tracking",
+    blocks: [
+      "We monitor relevant performance indicators such as reach, website traffic, engagement, enquiries and leads, depending on the selected services. Performance insights are used to review and improve our strategies.",
+    ],
+  },
+  {
+    title: "Payment Terms",
+    blocks: [
+      "First Month:",
+      [
+        "50% of the agreed monthly package fee must be paid in advance before the commencement of services.",
+        "The remaining 50% must be paid at the end of the first service month.",
+      ],
+      "From the Second Month Onwards:",
+      ["The full agreed monthly package fee must be paid in advance for each subsequent month."],
+      "Services may be paused if payments are delayed, subject to prior communication with the client.",
+    ],
+  },
+  {
+    title: "Monthly Continuation",
+    blocks: [
+      "Our digital marketing services operate on a month-to-month basis, with no fixed long-term commitment unless separately agreed in writing.",
+      "Services will continue based on mutual agreement and timely payment of the applicable monthly fee.",
+    ],
+  },
+  {
+    title: "Service Scope & Additional Charges",
+    blocks: [
+      "Only the services and deliverables included in the selected package or approved proposal are covered by the agreed monthly fee.",
+      "The following are charged separately unless explicitly included in a written agreement:",
+      [
+        "Google Ads and Meta Ads advertising budgets.",
+        "Google Ads and Meta Ads campaign management fees.",
+        "Website development and maintenance projects.",
+        "Professional photography and video production.",
+        "Influencer marketing and third-party service charges.",
+        "Additional services outside the agreed scope.",
+      ],
+      "Any additional work or charges will be discussed and approved by the client before commencement.",
+    ],
+  },
+  {
+    title: "Client Responsibilities",
+    blocks: [
+      "The client must provide the necessary business information, content, approvals, access permissions and other materials required to perform the agreed services.",
+      "Delays in providing information, access or approvals may affect the planned delivery timelines.",
+    ],
+  },
+  {
+    title: "Third-Party Platforms",
+    blocks: [
+      "Our services may involve third-party platforms such as Google, Meta, Instagram and other digital services.",
+      "HD NEXORA WEBTEC does not control changes to their policies, algorithms, account restrictions, platform availability or advertising approval decisions.",
+    ],
+  },
+  {
+    title: "Performance & Results",
+    blocks: [
+      "We do not guarantee specific search rankings, sales figures, leads, conversions or advertising results.",
+      "Digital marketing performance depends on several factors, including competition, industry conditions, advertising budgets, audience behaviour and third-party platform changes.",
+      "We focus on consistent strategy, transparent reporting and continuous optimisation.",
+    ],
+  },
+  {
+    title: "Cancellation & Service Discontinuation",
+    blocks: [
+      "Either party may request discontinuation of monthly services by providing written notice before the next service month begins.",
+      "Fees for services already delivered and any previously approved additional expenses remain payable.",
+      "Any pending payments and applicable service commitments must be settled before closure.",
+    ],
+  },
+  {
+    title: "Our Commitment",
+    blocks: [
+      "We believe in consistent strategy, measurable progress, transparent communication and continuous improvement.",
+      "Our objective is to help businesses strengthen their digital presence and work towards sustainable growth.",
+    ],
+  },
+];
