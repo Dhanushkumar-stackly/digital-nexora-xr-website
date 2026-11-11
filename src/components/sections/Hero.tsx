@@ -26,8 +26,8 @@ const Hero = () => {
             </motion.p>
 
             <motion.h1 className="agency-hero-title" {...fadeIn(0.08)}>
-              <span>Build Your Digital Presence.</span>
-              <span>Grow Your Business.</span>
+              <span>Build Your Digital Presence.</span>{" "}
+              <span className="agency-hero-accent">Grow Your Business.</span>
             </motion.h1>
 
             <motion.div className="agency-hero-description" {...fadeIn(0.16)}>

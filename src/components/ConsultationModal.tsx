@@ -157,7 +157,7 @@ export default function ConsultationModal({ isOpen, topic, onClose }: Consultati
           transition={{ duration: 0.2 }}
         >
           <div
-            className="absolute inset-0 bg-[#02060f]/75 backdrop-blur-sm"
+            className="absolute inset-0 bg-[#020a14]/75 backdrop-blur-sm"
             onClick={handleClose}
           />
 
@@ -176,7 +176,7 @@ export default function ConsultationModal({ isOpen, topic, onClose }: Consultati
               <button
                 type="button"
                 onClick={handleClose}
-                className="text-xl text-[#94a3b8] hover:text-white"
+                className="text-xl text-[#8fa1b8] hover:text-white"
                 aria-label="Close"
               >
                 ✕
@@ -185,12 +185,12 @@ export default function ConsultationModal({ isOpen, topic, onClose }: Consultati
 
             {reference !== null ? (
               <div className="text-center">
-                <p className="text-[#cbd5e1]">
+                <p className="text-[#c3cddb]">
                   Thank you. We&apos;ve received your consultation request and will be in touch
                   soon. A confirmation has been sent to your email.
                 </p>
                 {reference && (
-                  <p className="mt-4 text-sm text-[#94a3b8]">Your reference: {reference}</p>
+                  <p className="mt-4 text-sm text-[#8fa1b8]">Your reference: {reference}</p>
                 )}
                 <button type="button" onClick={handleClose} className="agency-button-primary mt-6">
                   Close
@@ -339,7 +339,7 @@ export default function ConsultationModal({ isOpen, topic, onClose }: Consultati
                   {loading ? 'Sending…' : 'Request Consultation'}
                 </button>
 
-                <p className="text-center text-xs leading-relaxed text-[#94a3b8]">
+                <p className="text-center text-xs leading-relaxed text-[#8fa1b8]">
                   We use these details only to respond to your enquiry and discuss our services. See
                   our{' '}
                   <Link

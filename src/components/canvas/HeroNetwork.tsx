@@ -11,8 +11,8 @@ import {
 } from "three";
 
 const FOG = "#17387f";
-const ACCENT = "#2563eb";
-const HIGHLIGHT = "#60a5fa";
+const ACCENT = "#116ef9";
+const HIGHLIGHT = "#2b99f2";
 
 const RADIUS = 2;
 const NODE_COUNT = 120;

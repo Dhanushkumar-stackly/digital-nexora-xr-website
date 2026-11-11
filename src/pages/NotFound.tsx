@@ -28,7 +28,7 @@ const NotFound = () => {
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.2 }}
             style={{
-              background: "linear-gradient(135deg, #60a5fa 0%, #2563eb 100%)",
+              background: "linear-gradient(135deg, #2b99f2 0%, #116ef9 100%)",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
               backgroundClip: "text",
@@ -48,7 +48,7 @@ const NotFound = () => {
           </motion.h2>
 
           <motion.p
-            className="text-lg sm:text-xl text-[#cbd5e1] mb-12 max-w-2xl mx-auto"
+            className="text-lg sm:text-xl text-[#c3cddb] mb-12 max-w-2xl mx-auto"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.6 }}
