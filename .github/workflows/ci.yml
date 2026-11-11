@@ -1,0 +1,38 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main  # Triggers on push to main branch
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Type check
+        run: npm run ts:check
+
+      - name: Lint code
+        run: npm run lint
+
+      - name: Test
+        run: npx vitest run
+
+      # Deploys happen through Vercel's GitHub integration, not this workflow.
+      - name: Build project
+        run: npm run build

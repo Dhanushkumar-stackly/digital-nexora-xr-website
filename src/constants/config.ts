@@ -10,10 +10,6 @@ type TConfig = {
     fullName: string;
     email: string;
   };
-  hero: {
-    name: string;
-    p: string[];
-  };
   contact: {
     form: {
       name: {
@@ -30,12 +26,6 @@ type TConfig = {
       };
     };
   } & TSection;
-  sections: {
-    about: Required<TSection>;
-    experience: TSection;
-    digitalMarketing: Required<TSection>;
-    feedbacks: Required<TSection>;
-  };
 };
 
 export const config: TConfig = {
@@ -43,10 +33,6 @@ export const config: TConfig = {
     title: "HD NEXORA WEBTEC",
     fullName: "HD NEXORA WEBTEC",
     email: "digitalnexorawebtech0401@gmail.com",
-  },
-  hero: {
-    name: "HD NEXORA WEBTEC",
-    p: ["Create. Connect. Convert"],
   },
   contact: {
     p: "Get in touch",
@@ -61,27 +47,6 @@ export const config: TConfig = {
         span: "Your Message",
         placeholder: "What do you want to say?",
       },
-    },
-  },
-  sections: {
-    about: {
-      p: "",
-      h2: "",
-      content: ``,
-    },
-    experience: {
-      p: "What I have done so far",
-      h2: "Work Experience.",
-    },
-    digitalMarketing: {
-      p: "Digital Solutions",
-      h2: "Digital Marketing.",
-      content: `Comprehensive digital marketing services combining AI-driven strategies with cutting-edge web technologies. From SEO optimization and social media management to content marketing and analytics, we deliver data-driven campaigns that drive engagement and conversions. Our expertise in modern web frameworks ensures seamless integration of marketing tools and tracking systems for measurable results.`,
-    },
-    feedbacks: {
-      p: "What others say",
-      h2: "Testimonials.",
-      content: `Hear from our satisfied clients and partners about their experience working with HD NEXORA WEBTEC. We pride ourselves on delivering exceptional results and building lasting relationships through innovation, professionalism, and dedication to excellence.`,
     },
   },
 };

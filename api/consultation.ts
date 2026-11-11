@@ -1,4 +1,4 @@
-import { VercelRequest, VercelResponse } from "@vercel/node";
+import type { VercelRequest, VercelResponse } from "@vercel/node";
 
 // In-memory rate limiting (for serverless, consider Redis for production)
 const rateLimitMap = new Map<string, number[]>();
@@ -24,7 +24,7 @@ function sanitizeInput(input: string, maxLength: number = 500): string {
     .trim()
     .slice(0, maxLength)
     .replace(/<[^>]*>/g, "") // Remove HTML tags
-    .replace(/[^a-zA-Z0-9\s\-\.,'@()&]/g, ""); // Remove suspicious characters
+    .replace(/[^a-zA-Z0-9\s\-.,'@()&]/g, ""); // Remove suspicious characters
 }
 
 function validateEmail(email: string): boolean {
@@ -33,7 +33,7 @@ function validateEmail(email: string): boolean {
 }
 
 function validatePhone(phone: string): boolean {
-  const regex = /^[\d\s\-\+\(\)]{7,20}$/;
+  const regex = /^[\d\s\-+()]{7,20}$/;
   return regex.test(phone);
 }
 

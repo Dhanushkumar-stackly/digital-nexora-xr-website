@@ -22,7 +22,7 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src", "src/types/globals.d.ts"],
+  "include": ["src"],
   "exclude": ["src/**/*.test.*", "src/**/*.spec.*", "src/**/*.stories.*"],
   "typeRoots": ["./node_modules/@types", "./src/types"],
   "references": [{ "path": "./tsconfig.node.json" }]

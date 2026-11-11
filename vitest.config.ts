@@ -6,5 +6,6 @@ export default {
     environment: 'jsdom',
     globals: true,
     setupFiles: [],
+    passWithNoTests: true,
   },
 } as any;
