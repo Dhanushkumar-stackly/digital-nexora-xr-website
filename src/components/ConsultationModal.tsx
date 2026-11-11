@@ -23,7 +23,21 @@ const EMPTY_FORM = {
 type FormData = typeof EMPTY_FORM;
 type FieldErrors = Partial<Record<keyof FormData, string>>;
 
-const WHATSAPP_URL = 'https://wa.me/919943711466';
+// Fallback when email can't be sent: hand the visitor's details to WhatsApp so the enquiry isn't lost.
+const whatsappUrl = (data: FormData) => {
+  const lines = [
+    'Hello HD NEXORA WEBTEC, I would like a free consultation.',
+    '',
+    `Name: ${data.name}`,
+    `Business: ${data.businessName}`,
+    `Phone: ${data.phone}`,
+    `Email: ${data.email}`,
+    `Service: ${data.service}`,
+    `Budget: ${data.budget}`,
+    data.message ? `Message: ${data.message}` : '',
+  ].filter((line, i) => i < 2 || !/:\s*$/.test(line));
+  return `https://wa.me/919943711466?text=${encodeURIComponent(lines.join('\n').trim())}`;
+};
 
 export default function ConsultationModal({ isOpen, topic, onClose }: ConsultationModalProps) {
   const [formData, setFormData] = useState<FormData>(EMPTY_FORM);
@@ -311,12 +325,12 @@ export default function ConsultationModal({ isOpen, topic, onClose }: Consultati
                   >
                     {error}{' '}
                     <a
-                      href={WHATSAPP_URL}
+                      href={whatsappUrl(formData)}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="underline hover:text-white"
                     >
-                      Open WhatsApp →
+                      Send these details on WhatsApp →
                     </a>
                   </div>
                 )}
