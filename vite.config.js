@@ -1,3 +1,4 @@
+import { fileURLToPath } from "node:url";
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
@@ -16,18 +17,25 @@ const chunkFor = (id) => {
 };
 
 // https://vitejs.dev/config/
-export default defineConfig({
+export default defineConfig(({ isSsrBuild }) => ({
   plugins: [react()],
   optimizeDeps: {
     include: ['@emailjs/browser', 'react-toastify']
   },
-  build: {
-    rollupOptions: {
-      output: {
-        manualChunks: chunkFor,
+  resolve: isSsrBuild
+    ? {
+        // The prerender runs in Node, where WebGL scenes can't render; swap them for an empty component.
+        alias: [
+          {
+            find: /^.*\/canvas\/(HeroNetwork|SeoScene|Earth|Stars)$/,
+            replacement: fileURLToPath(new URL("./src/ssr/EmptyCanvas.tsx", import.meta.url)),
+          },
+        ],
       }
-    },
+    : undefined,
+  build: {
+    rollupOptions: isSsrBuild ? {} : { output: { manualChunks: chunkFor } },
     // raise warning limit to 1000 KB (1 MB) — still shows warnings for very large chunks
     chunkSizeWarningLimit: 1000
   }
-});
+}));

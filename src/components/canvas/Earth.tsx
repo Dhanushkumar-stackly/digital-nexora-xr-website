@@ -217,6 +217,8 @@ const FitCamera = () => {
 };
 
 const EarthCanvas = () => {
+  const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
   return (
     <div className="earth-network-canvas">
       <Canvas
@@ -234,7 +236,7 @@ const EarthCanvas = () => {
 
         <Suspense fallback={<CanvasLoader />}>
           <OrbitControls
-            autoRotate
+            autoRotate={!still}
             autoRotateSpeed={0.6}
             enablePan={false}
             enableZoom={false}

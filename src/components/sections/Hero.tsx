@@ -1,4 +1,4 @@
-import { Suspense, lazy } from "react";
+import { Suspense, lazy, useEffect, useState } from "react";
 import { MotionConfig, motion } from "framer-motion";
 import { useConsultation } from "../../hooks/useConsultation";
 
@@ -12,6 +12,9 @@ const fadeIn = (delay: number) => ({
 
 const Hero = () => {
   const openConsultation = useConsultation();
+  // Render the WebGL globe only after hydration so the prerendered HTML and first client render match.
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
 
   return (
     <MotionConfig reducedMotion="user">
@@ -63,9 +66,11 @@ const Hero = () => {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.9, delay: 0.2, ease: "easeOut" }}
           >
-            <Suspense fallback={null}>
-              <HeroNetworkCanvas />
-            </Suspense>
+            {mounted && (
+              <Suspense fallback={null}>
+                <HeroNetworkCanvas />
+              </Suspense>
+            )}
           </motion.div>
         </div>
       </section>

@@ -28,6 +28,14 @@ const PHONES = [
 
 const Footer = () => {
   const goToSection = useSectionNav();
+  const sectionLink = (id: string) => ({
+    href: `/#${id}`,
+    className: "site-footer-link",
+    onClick: (e: React.MouseEvent) => {
+      e.preventDefault();
+      goToSection(id);
+    },
+  });
 
   return (
     <footer className="site-footer">
@@ -49,9 +57,7 @@ const Footer = () => {
           <ul className="site-footer-list">
             {QUICK_LINKS.map((link) => (
               <li key={link.id}>
-                <button type="button" className="site-footer-link" onClick={() => goToSection(link.id)}>
-                  {link.title}
-                </button>
+                <a {...sectionLink(link.id)}>{link.title}</a>
               </li>
             ))}
           </ul>
@@ -62,9 +68,7 @@ const Footer = () => {
           <ul className="site-footer-list">
             {SERVICES.map((service) => (
               <li key={service}>
-                <button type="button" className="site-footer-link" onClick={() => goToSection("services")}>
-                  {service}
-                </button>
+                <a {...sectionLink("services")}>{service}</a>
               </li>
             ))}
           </ul>

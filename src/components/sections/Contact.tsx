@@ -1,7 +1,8 @@
-import { Suspense, lazy } from "react";
+import { Suspense, lazy, useRef } from "react";
 
 import { SectionWrapper } from "../../hoc";
 import { useConsultation } from "../../hooks/useConsultation";
+import { useNearViewport } from "../../hooks/useNearViewport";
 import SectionIntro from "./SectionIntro";
 
 const EarthCanvas = lazy(() => import("../canvas/Earth"));
@@ -17,6 +18,8 @@ const WHATSAPP_URL = `https://wa.me/919943711466?text=${encodeURIComponent(
 
 const Contact = () => {
   const openConsultation = useConsultation();
+  const globeRef = useRef<HTMLDivElement>(null);
+  const showGlobe = useNearViewport(globeRef);
 
   return (
     <div className="contact-layout">
@@ -55,10 +58,12 @@ const Contact = () => {
         </div>
       </div>
 
-      <div className="contact-globe" aria-hidden="true">
-        <Suspense fallback={null}>
-          <EarthCanvas />
-        </Suspense>
+      <div ref={globeRef} className="contact-globe" aria-hidden="true">
+        {showGlobe && (
+          <Suspense fallback={null}>
+            <EarthCanvas />
+          </Suspense>
+        )}
       </div>
     </div>
   );

@@ -13,7 +13,8 @@ const Navbar = () => {
   const goToSection = useSectionNav();
   const openConsultation = useConsultation();
 
-  const handleNavClick = (id: string) => {
+  const handleNavClick = (e: React.MouseEvent, id: string) => {
+    e.preventDefault();
     goToSection(id);
     setActive(id);
     setMenuOpen(false);
@@ -69,14 +70,14 @@ const Navbar = () => {
           <ul className="hidden list-none items-center gap-7 xl:flex">
             {navLinks.map((nav) => (
               <li key={nav.id}>
-                <button
-                  type="button"
-                  onClick={() => handleNavClick(nav.id)}
+                <a
+                  href={`/#${nav.id}`}
+                  onClick={(e) => handleNavClick(e, nav.id)}
                   className={`site-nav-link ${active === nav.id ? "is-active" : ""}`}
                   aria-current={active === nav.id ? "true" : undefined}
                 >
                   {nav.title}
-                </button>
+                </a>
               </li>
             ))}
           </ul>
@@ -103,13 +104,13 @@ const Navbar = () => {
           <ul className="flex list-none flex-col">
             {navLinks.map((nav) => (
               <li key={nav.id}>
-                <button
-                  type="button"
-                  onClick={() => handleNavClick(nav.id)}
+                <a
+                  href={`/#${nav.id}`}
+                  onClick={(e) => handleNavClick(e, nav.id)}
                   className={`site-nav-menu-link ${active === nav.id ? "is-active" : ""}`}
                 >
                   {nav.title}
-                </button>
+                </a>
               </li>
             ))}
           </ul>

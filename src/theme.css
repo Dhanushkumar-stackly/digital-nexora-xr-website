@@ -78,6 +78,23 @@
 @layer components {
   /* ---------- Layout ---------- */
 
+  .skip-link {
+    position: absolute;
+    z-index: 100;
+    top: 0.75rem;
+    left: 0.75rem;
+    padding: 0.6rem 1rem;
+    border-radius: var(--radius-sm);
+    background: var(--color-accent);
+    color: #ffffff;
+    font-weight: 600;
+    transform: translateY(-200%);
+  }
+
+  .skip-link:focus {
+    transform: none;
+  }
+
   .site-section {
     position: relative;
     z-index: 0;
@@ -261,6 +278,7 @@
   }
 
   .site-nav-menu-link {
+    display: block;
     width: 100%;
     padding: 0.8rem 0;
     color: var(--color-text-muted);

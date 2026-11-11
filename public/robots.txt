@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+
+Sitemap: https://digital-nexora-xr-website-ten.vercel.app/sitemap.xml
