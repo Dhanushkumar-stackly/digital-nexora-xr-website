@@ -277,6 +277,15 @@ async function notifyByWhatsApp(fetchImpl: FetchLike, env: Env, enquiry: Enquiry
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
+  // The site is also hosted on Hostinger, which posts here cross-origin. No cookies are used.
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  if (req.method === "OPTIONS") {
+    res.setHeader("Access-Control-Allow-Methods", "POST");
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+    res.setHeader("Access-Control-Max-Age", "86400");
+    res.status(204).end();
+    return;
+  }
   if (req.method !== "POST") {
     res.setHeader("Allow", "POST");
     res.status(405).json({ message: "Method not allowed." });

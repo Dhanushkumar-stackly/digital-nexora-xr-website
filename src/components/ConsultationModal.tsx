@@ -4,6 +4,9 @@ import { Link } from 'react-router-dom';
 
 import { consultationBudgets, consultationServices } from '../constants/consultation';
 
+// Absolute so the static Hostinger copy of the site still reaches the Vercel function.
+const CONSULTATION_API = 'https://digital-nexora-xr-website-ten.vercel.app/api/consultation';
+
 interface ConsultationModalProps {
   isOpen: boolean;
   topic?: string;
@@ -103,7 +106,7 @@ export default function ConsultationModal({ isOpen, topic, onClose }: Consultati
     setLoading(true);
 
     try {
-      const res = await fetch('/api/consultation', {
+      const res = await fetch(CONSULTATION_API, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...formData, website, fillMs: Date.now() - startedAt.current }),
