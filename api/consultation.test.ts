@@ -1,8 +1,9 @@
 // @vitest-environment node
 import { describe, expect, it, vi } from "vitest";
+import type { Mock } from "vitest";
 
 import { isRateLimited, processConsultation, validate, whatsappPayload } from "./consultation";
-import type { Enquiry } from "./consultation";
+import type { Enquiry, Env } from "./consultation";
 
 const NOW = 1_800_000_000_000;
 const ENV = {
@@ -24,8 +25,10 @@ const valid = {
 };
 
 let ipCounter = 0;
-const run = (body: unknown, overrides: Partial<{ env: typeof ENV; fetchImpl: ReturnType<typeof vi.fn> }> = {}) => {
-  const fetchImpl = overrides.fetchImpl ?? vi.fn().mockResolvedValue({ ok: true, status: 200 });
+type FetchMock = Mock<any[], Promise<{ ok: boolean; status: number }>>;
+
+const run = (body: unknown, overrides: Partial<{ env: Env; fetchImpl: FetchMock }> = {}) => {
+  const fetchImpl: FetchMock = overrides.fetchImpl ?? vi.fn().mockResolvedValue({ ok: true, status: 200 });
   const promise = processConsultation(body, {
     ip: `10.0.0.${++ipCounter}`,
     env: overrides.env ?? ENV,
@@ -35,7 +38,7 @@ const run = (body: unknown, overrides: Partial<{ env: typeof ENV; fetchImpl: Ret
   return { promise, fetchImpl };
 };
 
-const sentPayloads = (fetchImpl: ReturnType<typeof vi.fn>) =>
+const sentPayloads = (fetchImpl: FetchMock) =>
   fetchImpl.mock.calls.map(([, init]) => JSON.parse((init as RequestInit).body as string));
 
 describe("processConsultation", () => {
@@ -163,7 +166,7 @@ describe("WhatsApp notifications", () => {
   };
 
   it("sends a template message when only WhatsApp is configured", async () => {
-    const { promise, fetchImpl } = run(valid, { env: WA as typeof ENV });
+    const { promise, fetchImpl } = run(valid, { env: WA });
     const result = await promise;
 
     expect(result.status).toBe(200);
