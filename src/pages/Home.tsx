@@ -11,7 +11,6 @@ import FinalCta from "../components/sections/FinalCta";
 const Home = () => (
   <>
     <Hero />
-    <AboutUs />
     <Services />
     <Pricing />
     <AdditionalServices />
@@ -20,6 +19,7 @@ const Home = () => (
     <Industries />
     <OurWork />
     <FinalCta />
+    <AboutUs />
     <Contact />
   </>
 );
