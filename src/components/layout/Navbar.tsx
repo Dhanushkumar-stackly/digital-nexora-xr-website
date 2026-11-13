@@ -51,7 +51,8 @@ const Navbar = () => {
 
   return (
     <nav className={`site-nav fixed top-0 z-30 w-full px-5 py-3 sm:px-6 ${scrolled || menuOpen ? "is-scrolled" : ""}`}>
-      <div className="mx-auto flex w-full max-w-[1200px] items-center justify-between gap-4">
+      {/* Phones (<640px): menu button first, logo right after it. Tablet/desktop keep logo left, menu right. */}
+      <div className="mx-auto flex w-full max-w-[1200px] items-center justify-between gap-4 max-sm:justify-start max-sm:gap-3">
         <Link
           to="/"
           className="flex min-w-0 items-center gap-3"
@@ -66,7 +67,7 @@ const Navbar = () => {
           </span>
         </Link>
 
-        <div className="flex items-center gap-7">
+        <div className="flex shrink-0 items-center gap-7 max-sm:order-first">
           <ul className="hidden list-none items-center gap-7 xl:flex">
             {navLinks.map((nav) => (
               <li key={nav.id}>
