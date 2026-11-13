@@ -1,5 +1,5 @@
 // Update when a custom domain is connected.
-export const SITE_URL = "https://digital-nexora-xr-website-ten.vercel.app";
+export const SITE_URL = "https://www.hdnexora.in";
 
 export type RouteMeta = {
   title: string;

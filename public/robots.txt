@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /api/
 
-Sitemap: https://digital-nexora-xr-website-ten.vercel.app/sitemap.xml
+Sitemap: https://www.hdnexora.in/sitemap.xml

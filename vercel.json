@@ -1,4 +1,12 @@
 {
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "has": [{ "type": "host", "value": "hdnexora.in" }],
+      "destination": "https://www.hdnexora.in/$1",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     { "source": "/privacy-policy", "destination": "/privacy-policy/index.html" },
     { "source": "/terms-and-conditions", "destination": "/terms-and-conditions/index.html" },
