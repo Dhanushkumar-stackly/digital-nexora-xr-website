@@ -11,6 +11,8 @@ on:
 jobs:
   checks:
     runs-on: ubuntu-latest
+    env:
+      FTP_SERVER: ${{ secrets.FTP_SERVER }}
 
     steps:
       - name: Checkout code
@@ -33,6 +35,18 @@ jobs:
       - name: Test
         run: npx vitest run
 
-      # Deploys happen through Vercel's GitHub integration, not this workflow.
+      # Vercel deploys through its own GitHub integration; this workflow uploads the same build to Hostinger.
       - name: Build project
         run: npm run build
+
+      # Skipped until the FTP secrets are added in GitHub > Settings > Secrets and variables > Actions.
+      - name: Deploy to Hostinger
+        if: github.event_name == 'push' && env.FTP_SERVER != ''
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ${{ vars.FTP_PROTOCOL || 'ftps' }}
+          local-dir: ./dist/
+          server-dir: ${{ vars.FTP_SERVER_DIR || 'public_html/' }}
