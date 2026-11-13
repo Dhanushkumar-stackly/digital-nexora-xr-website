@@ -2,17 +2,13 @@ import { SectionWrapper } from "../../hoc";
 import { approach } from "../../constants/content";
 import Icon from "../Icon";
 import SectionIntro from "./SectionIntro";
-import dhanushKumar from "../../assets/dhanush-kumar.webp";
-import hariharasudhan from "../../assets/hariharasudhan.webp";
 
 const team = [
   {
-    photo: dhanushKumar,
     name: "S. Dhanush Kumar",
     role: "B.E. (Electronics & Instrumentation Engineering) | AI & Machine Learning Engineer | Website Development Manager",
   },
   {
-    photo: hariharasudhan,
     name: "M. Hariharasudhan",
     role: "BBA CA | Finance & Marketing Expert | Logistics & Transport Specialist",
   },
@@ -25,7 +21,6 @@ const AboutUs = () => (
       <div className="about-team">
         {team.map((m) => (
           <figure key={m.name} className="team-card">
-            <img src={m.photo} alt={m.name} loading="lazy" />
             <figcaption>
               <h3>{m.name}</h3>
               <p>{m.role}</p>

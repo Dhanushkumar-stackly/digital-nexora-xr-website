@@ -623,14 +623,6 @@
     overflow: hidden;
   }
 
-  .team-card img {
-    display: block;
-    width: 100%;
-    aspect-ratio: 4 / 5;
-    object-fit: cover;
-    object-position: top;
-  }
-
   .team-card figcaption {
     padding: 1rem 1.25rem 1.25rem;
   }
